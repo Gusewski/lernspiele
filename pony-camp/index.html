@@ -1,0 +1,835 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Pony Camp Obby</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fbf6ea; --card:#ffffff; --ink:#2a2733; --muted:#6b6577; --line:#eadfc8;
+  --green:#2f8f5b; --green-soft:#e3f3e9; --sky:#2f74b5; --sky-soft:#e4effa;
+  --gold:#c99700; --gold-soft:#fff3c4; --funk:#c2410c; --funk-soft:#ffe8dc;
+  --red:#d64545; --yellow:#e8b100;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#1c1a22; --card:#26232e; --ink:#f1edf7; --muted:#b3abc2; --line:#3a3545;
+    --green:#5cc68b; --green-soft:#21362b; --sky:#6fb0ee; --sky-soft:#1f2e3d;
+    --gold:#f2c94c; --gold-soft:#3a3218; --funk:#ff8a50; --funk-soft:#3d2418;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,sans-serif;font-size:18px;line-height:1.55}
+.wrap{max-width:820px;margin:0 auto;padding:0 16px 80px}
+header.hero{background:linear-gradient(160deg,#8fd3a8 0%,#7cc0ea 100%);color:#13321f;padding:36px 16px 28px;text-align:center}
+header.hero h1{font-size:clamp(2rem,6vw,3rem);margin:0;font-weight:900;letter-spacing:.5px}
+header.hero p{margin:6px 0 0;font-weight:700}
+.bar{position:sticky;top:0;z-index:10;background:var(--card);border-bottom:2px solid var(--line);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.bar-in{max-width:820px;margin:0 auto;padding:8px 16px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between}
+.score{display:flex;align-items:center;gap:6px;font-weight:900;font-size:1.1rem}
+.badges{display:flex;gap:6px}
+.badge-slot{width:30px;height:30px;border-radius:50%;border:2px dashed var(--line);display:grid;place-items:center;font-size:.75rem;font-weight:900;color:var(--muted)}
+.badge-slot.on{border:2px solid var(--gold);background:var(--gold-soft);color:var(--gold)}
+nav.quick{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+nav.quick a{white-space:nowrap;text-decoration:none;color:var(--sky);background:var(--sky-soft);padding:4px 10px;border-radius:999px;font-weight:800;font-size:.85rem}
+section.card{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:20px;margin:24px 0;scroll-margin-top:110px}
+h2{font-size:1.6rem;margin:0 0 8px;font-weight:900}
+h3{font-size:1.15rem;margin:22px 0 8px;font-weight:900;color:var(--green)}
+.step-tag{display:inline-block;font-size:.75rem;font-weight:900;letter-spacing:1px;text-transform:uppercase;background:var(--green-soft);color:var(--green);padding:2px 10px;border-radius:999px;margin-right:6px}
+blockquote.say{margin:10px 0;padding:12px 16px;background:var(--sky-soft);border-left:5px solid var(--sky);border-radius:12px;font-weight:700}
+.funk{display:inline-block;background:var(--funk);color:#fff;font-weight:900;font-size:.8rem;padding:1px 8px;border-radius:6px;letter-spacing:1px;margin-right:4px}
+.big{font-weight:900;letter-spacing:1px}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.95rem}
+th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;vertical-align:top}
+th{background:var(--green-soft)}
+.table-scroll{overflow-x:auto}
+.example{background:var(--gold-soft);border-radius:14px;padding:12px 16px;margin:12px 0}
+.task{border:2px solid var(--line);border-radius:16px;padding:14px 16px;margin:14px 0}
+.task-title{font-weight:900;font-size:1.05rem;margin-bottom:6px}
+.task-title .num{display:inline-block;background:var(--ink);color:var(--card);border-radius:8px;padding:0 8px;margin-right:6px}
+.level{margin:8px 0;padding:8px 12px;border-radius:12px;background:var(--bg)}
+.level b{color:var(--green)}
+.task-foot{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start;justify-content:space-between;margin-top:10px;border-top:1px dashed var(--line);padding-top:10px}
+details.hint{flex:1 1 260px}
+details.hint summary{cursor:pointer;font-weight:800;color:var(--sky)}
+details.hint p{margin:6px 0}
+details.hint details summary{color:var(--funk)}
+.done{display:flex;gap:6px;align-items:center;font-weight:800;font-size:.9rem}
+button{font:inherit;cursor:pointer}
+.pt{border:2px solid var(--green);background:transparent;color:var(--green);border-radius:999px;padding:4px 12px;font-weight:900}
+.pt[aria-pressed="true"]{background:var(--green);color:#fff}
+.reward{margin-top:16px;padding:14px 16px;border-radius:14px;background:var(--gold-soft);border:2px dashed var(--gold)}
+.reward.unlocked{border-style:solid}
+.reward .status{font-weight:900;color:var(--gold)}
+ul,ol{padding-left:1.4em}
+li{margin:3px 0}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.chip{background:var(--sky-soft);color:var(--sky);border-radius:8px;padding:2px 10px;font-weight:800}
+.self td:last-child{white-space:nowrap}
+.dot{width:34px;height:34px;border-radius:50%;border:3px solid transparent;margin-right:4px;opacity:.35}
+.dot.g{background:#3bb36b}.dot.y{background:var(--yellow)}.dot.r{background:var(--red)}
+.dot[aria-pressed="true"]{opacity:1;border-color:var(--ink)}
+.cta{background:var(--funk);color:#fff;border:0;border-radius:14px;padding:12px 18px;font-weight:900;font-size:1rem}
+.cta.alt{background:var(--green)}
+.ghost{background:transparent;border:2px solid var(--line);color:var(--muted);border-radius:12px;padding:8px 14px;font-weight:800}
+#solutions[hidden]{display:none}
+.golden{display:none;text-align:center;padding:18px;border-radius:18px;background:var(--gold-soft);border:3px solid var(--gold);margin-top:16px}
+.golden.show{display:block}
+.golden svg{width:80px;height:80px}
+.form-blank td:last-child{min-width:140px}
+footer{color:var(--muted);text-align:center;font-size:.85rem;margin-top:30px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>Pony Camp Obby</h1>
+  <p>Englisch Unit 1 · Eine Mission im Sunny Hill Pony Camp</p>
+</header>
+
+<div class="bar">
+  <div class="bar-in">
+    <div class="score" aria-live="polite">
+      <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3v8a7 7 0 0 0 14 0V3h-4v8a3 3 0 0 1-6 0V3z" fill="#c99700"/></svg>
+      <span><span id="total">0</span> Punkte</span>
+    </div>
+    <div class="badges" id="badgeBar" aria-label="Abzeichen"></div>
+    <nav class="quick">
+      <a href="#mission">Mission</a><a href="#q1">Quest 1</a><a href="#q2">Quest 2</a><a href="#q3">Quest 3</a><a href="#q4">Quest 4</a><a href="#q5">Quest 5</a><a href="#check">Check</a><a href="#loesungen">Lösungen</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap">
+
+<section class="card" id="mission">
+  <h2>Deine Mission</h2>
+  <p>Willkommen im <b>Sunny Hill Pony Camp</b>! Das ist ein Reitercamp in Roblox. Morgen kommen neue Kinder an. Coach Molly braucht dringend eine Helferin. Das bist du! Schaffst du alle 5 Quests, bekommst du das <b>Goldene Hufeisen</b>.</p>
+  <h3>Die Figuren</h3>
+  <ul>
+    <li><b>Coach Molly:</b> Sie leitet das Camp. Sie spricht nur Englisch.</li>
+    <li><b>Pixel:</b> Ein kleines Roblox-Pony. Pixel erklärt dir jeden Trick.</li>
+    <li><b>Das Funkgerät:</b> Das ist Papa. Er liest dir Funk-Nachrichten vor.</li>
+    <li><b>Der Mystery Guest:</b> Ein geheimer Gast. Papa spielt ihn in Quest 4.</li>
+  </ul>
+  <h3>So spielst du</h3>
+  <ol>
+    <li>Spiel die Quests der Reihe nach.</li>
+    <li>Bei jeder Aufgabe wählst du: ★ (Basis) oder ★★ (Profi).</li>
+    <li>Schreib alles auf dein Papier. Schreib die Nummer dazu, zum Beispiel «1.1».</li>
+    <li>Steckst du fest? Klick auf «Tipp 1». Hilft das nicht? Dann «Tipp 2».</li>
+    <li>Fertig mit einer Aufgabe? Klick auf ★ oder ★★. So sammelst du Punkte.</li>
+  </ol>
+  <p><span class="funk">FUNK</span> Steht das bei einer Aufgabe, holst du Papa. Sag auf Englisch: «Radio card 1, please!» Sag auch deine Stufe: «Star one» oder «Star two». Papa darf jede Karte zweimal vorlesen.</p>
+  <h3>Material</h3>
+  <ul>
+    <li>Papier oder Heft, Bleistift, Radiergummi</li>
+    <li>7 leere Zettel (für Quest 2)</li>
+    <li>Papa (etwa 15 Minuten, in Quest 1, 4, 5 und im Check)</li>
+  </ul>
+  <p><b>Dauer:</b> etwa 45 bis 60 Minuten. Nach Quest 3 darfst du Pause machen.</p>
+</section>
+
+<!-- QUEST 1 -->
+<section class="card" id="q1">
+  <h2>Quest 1: Das Tor-Passwort</h2>
+  <h3><span class="step-tag">Auftrag</span></h3>
+  <p>Coach Molly steht am Camp-Tor. Sie ruft:</p>
+  <blockquote class="say">«Hello! I'm Molly. The camp gate is closed. (Das Tor ist zu.) The password comes by radio. (Das Passwort kommt per Funk.) Listen and write it down!»</blockquote>
+
+  <h3><span class="step-tag">Entdecken</span></h3>
+  <ol>
+    <li>Sag das Alphabet laut auf Englisch: A, B, C bis Z.</li>
+    <li>Welche Buchstaben klingen anders als auf Deutsch? Schreib 3 auf.</li>
+    <li><span class="funk">FUNK</span> «Radio card 1, please!» Schreib den Probe-Code auf.</li>
+    <li>Deine Vermutung: Welche Buchstaben oder Zahlen sind Fallen? Schreib sie auf.</li>
+  </ol>
+
+  <h3><span class="step-tag">Bauplan</span></h3>
+  <p>Pixel wiehert: «Hi, I'm Pixel! Here is my plan.»</p>
+  <ol>
+    <li>Hör zuerst bis zum Ende zu.</li>
+    <li>Mach für jeden Buchstaben einen Strich: _ _ _ _</li>
+    <li>Pass auf die Fallen-Buchstaben auf. Sie stehen in der Tabelle.</li>
+    <li>Zahlen von 13 bis 19 enden auf <b>-teen</b>. Das klingt lang: thir-TEEN = 13.</li>
+    <li>Zehner enden auf <b>-ty</b>. Das klingt kurz: THIR-ty = 30.</li>
+    <li>Zweistellige Zahlen: Englisch sagt zuerst den Zehner. twenty-five = 25, nicht 52!</li>
+    <li>Schreib den Code ohne Lücken. Lies ihn nochmals leise.</li>
+  </ol>
+  <div class="table-scroll"><table>
+    <tr><th>Fallen-Buchstabe</th><th>klingt etwa wie</th><th>Fallen-Buchstabe</th><th>klingt etwa wie</th></tr>
+    <tr><td>A</td><td>«ej»</td><td>J</td><td>«dschej»</td></tr>
+    <tr><td>E</td><td>«i»</td><td>H</td><td>«ejtsch»</td></tr>
+    <tr><td>I</td><td>«ai»</td><td>R</td><td>«ar»</td></tr>
+    <tr><td>Y</td><td>«wai»</td><td>V</td><td>«wi»</td></tr>
+    <tr><td>G</td><td>«dschi»</td><td>W</td><td>«dabbel-ju»</td></tr>
+  </table></div>
+  <div class="example">
+    <b>Gelöstes Beispiel.</b> Der Funk sagt: «S – U – N – thirty-four».
+    <ol>
+      <li>Buchstaben: S, U, N.</li>
+      <li>thirty = 30, four = 4. Zusammen: 34.</li>
+      <li>Code: <span class="big">SUN34</span></li>
+    </ol>
+  </div>
+
+  <h3><span class="step-tag">Anwenden</span></h3>
+  <p>★ ist ein kurzer Code. ★★ hat Fallen-Zahlen.</p>
+
+  <div class="task" data-task="1.1">
+    <div class="task-title"><span class="num">1.1</span><span class="funk">FUNK</span> «Radio card 1.1, please!»</div>
+    <p>Schreib den Code auf.</p>
+    <div class="task-foot">
+      <details class="hint"><summary>Tipp 1</summary><p>Mach zuerst einen Strich pro Buchstabe.</p>
+        <details><summary>Tipp 2</summary><p>★ Das Wort ist ein kleines Pferd. ★★ Das Wort ist ein Name aus diesem Spiel. Hast du forty oder fourteen gehört?</p></details></details>
+      <div class="done">Geschafft: <button class="pt" data-p="1">★</button><button class="pt" data-p="2">★★</button></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="1.2">
+    <div class="task-title"><span class="num">1.2</span><span class="funk">FUNK</span> «Radio card 1.2, please!»</div>
+    <p>Schreib den Code auf.</p>
+    <div class="task-foot">
+      <details class="hint"><summary>Tipp 1</summary><p>Bitte Papa: «Slowly, please!» (Langsam, bitte!)</p>
+        <details><summary>Tipp 2</summary><p>★ Das Wort ist ein Haus für Pferde. ★★ Das Wort ist Pferdefutter (Heu). Eine Zahl endet auf -teen, eine auf -ty.</p></details></details>
+      <div class="done">Geschafft: <button class="pt" data-p="1">★</button><button class="pt" data-p="2">★★</button></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="1.3">
+    <div class="task-title"><span class="num">1.3</span><span class="funk">FUNK</span> «Radio card 1.3, please!»</div>
+    <p>Schreib den Code auf.</p>
+    <div class="task-foot">
+      <details class="hint"><summary>Tipp 1</summary><p>Schau nochmals in die Fallen-Tabelle.</p>
+        <details><summary>Tipp 2</summary><p>★ Das Wort heisst auf Deutsch «Lager». ★★ Das Wort heisst «springen». Erst kommt der Zehner, dann der Einer.</p></details></details>
+      <div class="done">Geschafft: <button class="pt" data-p="1">★</button><button class="pt" data-p="2">★★</button></div>
+    </div>
+  </div>
+
+  <div class="reward" data-quest="1">
+    <p><b>Belohnung:</b> Klick! Das Tor geht auf. Abzeichen <b>Code Cracker</b>.</p>
+    <p class="status"></p>
+  </div>
+</section>
+
+<!-- QUEST 2 -->
+<section class="card" id="q2">
+  <h2>Quest 2: Der Camp-Wochenplan</h2>
+  <h3><span class="step-tag">Auftrag</span></h3>
+  <p>Coach Molly rennt über den Platz:</p>
+  <blockquote class="say">«Oh no! The wind took my week plan. (Der Wind hat meinen Wochenplan weggeweht.) Can you help me, please?»</blockquote>
+
+  <h3><span class="step-tag">Entdecken</span></h3>
+  <p>Du findest diese Fetzen vom Plan:</p>
+  <div class="chips"><span class="chip">SUNDAY</span><span class="chip">TUESDAY</span><span class="chip">FRIDAY</span><span class="chip">MONDAY</span><span class="chip">SATURDAY</span><span class="chip">THURSDAY</span><span class="chip">WEDNESDAY</span></div>
+  <div class="chips"><span class="chip">cooking</span><span class="chip">climbing</span><span class="chip">dancing</span><span class="chip">sailing</span><span class="chip">horse riding</span><span class="chip">hiking</span></div>
+  <ol>
+    <li>Bring die Tage in die richtige Reihenfolge. Schreib sie auf.</li>
+    <li>Was haben alle Tage gemeinsam? Schau auf das Ende.</li>
+    <li>Was haben alle Hobby-Wörter gemeinsam? Schau auch auf das Ende.</li>
+    <li>Welche Hobbys kennst du schon? Welche sind neu?</li>
+  </ol>
+
+  <h3><span class="step-tag">Bauplan</span></h3>
+  <p>Pixel wiehert: «Here is my week trick!»</p>
+  <ol>
+    <li>Die Woche beginnt mit <b>Monday</b>.</li>
+    <li>Alle Tage enden auf <b>-day</b>.</li>
+    <li>Tage schreibt man auf Englisch immer gross: <b>M</b>onday, nicht monday.</li>
+    <li>Schwierige Tage schreibst du in Silben: Wed-nes-day, Tues-day, Thurs-day, Satur-day.</li>
+    <li>Bei Wednesday hört man das erste d nicht. Schreiben musst du es trotzdem!</li>
+    <li>Hobby-Wörter enden oft auf <b>-ing</b>.</li>
+  </ol>
+  <div class="table-scroll"><table>
+    <tr><th>English</th><th>Deutsch</th></tr>
+    <tr><td>cooking</td><td>kochen</td></tr>
+    <tr><td>climbing (das b hört man nicht)</td><td>klettern</td></tr>
+    <tr><td>dancing</td><td>tanzen</td></tr>
+    <tr><td>sailing</td><td>segeln</td></tr>
+    <tr><td>horse riding</td><td>reiten</td></tr>
+    <tr><td>hiking</td><td>wandern</td></tr>
+  </table></div>
+  <div class="example">
+    <b>Gelöstes Beispiel.</b> Pixel sagt: «My birthday is the day after Saturday.» (after = nach)
+    <ol>
+      <li>Welcher Tag kommt nach Saturday? Sunday.</li>
+      <li>Schreib: <b>Pixel's birthday: Sunday</b></li>
+    </ol>
+  </div>
+
+  <h3><span class="step-tag">Anwenden</span></h3>
+
+  <div class="task" data-task="2.1">
+    <div class="task-title"><span class="num">2.1</span>Hufeisen-Parcours (Bewegung)</div>
+    <p>Schreib die 7 Tage auf 7 Zettel. Ein Tag pro Zettel. Leg die Zettel in einer Reihe auf den Boden. Spring wie ein Pony von Zettel zu Zettel. Sag bei jedem Sprung den Tag laut.</p>
+    <div class="level"><b>★</b> Spring von Monday bis Sunday. Du darfst auf die Zettel schauen.</div>
+    <div class="level"><b>★★</b> Dreh die Zettel um. Spring vorwärts. Dann spring rückwärts: Sunday bis Monday.</div>
+    <p>Prüf danach deine Zettel mit dem Bauplan. Stimmt jeder Buchstabe?</p>
+    <div class="task-foot">
+      <details class="hint"><summary>Tipp 1</summary><p>Leg den Zettel Monday an den Anfang.</p>
+        <details><summary>Tipp 2</summary><p>Merktrick: Mo, Tu, We, Th, Fr, Sa, Su.</p></details></details>
+      <div class="done">Geschafft: <button class="pt" data-p="1">★</button><button class="pt" data-p="2">★★</button></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="2.2">
+    <div class="task-title"><span class="num">2.2</span>Mollys Wochenplan</div>
+    <div class="level"><b>★</b> Schreib den Plan ab. Setz die Tage ein. Der erste Buchstabe hilft dir.
+      <ul>
+        <li>M ......: hiking</li><li>T ......: horse riding</li><li>W ......: climbing</li><li>T ......: sailing</li>
+        <li>F ......: cooking</li><li>S ......: dancing</li><li>S ......: free day (freier Tag)</li>
+      </ul></div>
+    <div class="level"><b>★★</b> Mollys Notizen sind gemischt. Finde den Tag. Schreib dann den Plan von Monday bis Sunday. (before = vor, after = nach)
+      <ul>
+        <li>a) The day before Tuesday: hiking</li>
+        <li>b) The day after Thursday: cooking</li>
+        <li>c) The day after Monday: horse riding</li>
+        <li>d) The day before Thursday: climbing</li>
+        <li>e) The day after Wednesday: sailing</li>
+        <li>f) The day before Sunday: dancing</li>
+        <li>g) The last day of the week: free day</li>
+      </ul></div>
+    <div class="task-foot">
+      <details class="hint"><summary>Tipp 1</summary><p>Sag die Woche laut auf. Zeig dabei auf die Zeilen.</p>
+        <details><summary>Tipp 2</summary><p>★ Bei den T-Tagen kommt zuerst Tuesday, dann Thursday. ★★ Zeichne 7 Kästchen von Monday bis Sunday. Trag jede Notiz ins richtige Kästchen ein.</p></details></details>
+      <div class="done">Geschafft: <button class="pt" data-p="1">★</button><button class="pt" data-p="2">★★</button></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="2.3">
+    <div class="task-title"><span class="num">2.3</span>Welches Hobby ist das?</div>
+    <p>Molly erklärt die Camp-Hobbys. Schreib zu jedem Satz das Hobby auf. Wenn du magst, malst du ein kleines Bild dazu.</p>
+    <ol>
+      <li>You are on a boat on the lake. (boat = Boot, lake = See)</li>
+      <li>You make pizza in the kitchen.</li>
+      <li>You walk up a mountain.</li>
+      <li>You go up a rock wall. (rock wall = Kletterwand)</li>
+      <li>You move to the music.</li>
+      <li>You sit on a horse.</li>
+    </ol>
+    <div class="level"><b>★</b> Nimm die Wörter aus dem Kasten:
+      <div class="chips"><span class="chip">dancing</span><span class="chip">horse riding</span><span class="chip">climbing</span><span class="chip">cooking</span><span class="chip">sailing</span><span class="chip">hiking</span></div></div>
+    <div class="level"><b>★★</b> Ohne Kasten. Scroll nicht zum Bauplan zurück!</div>
+    <div class="task-foot">
+      <details class="hint"><summary>Tipp 1</summary><p>Such im Satz ein Wort, das du kennst.</p>
+        <details><summary>Tipp 2</summary><p>boat = segeln, pizza = kochen, mountain = wandern, rock wall = klettern, music = tanzen, horse = reiten.</p></details></details>
+      <div class="done">Geschafft: <button class="pt" data-p="1">★</button><button class="pt" data-p="2">★★</button></div>
+    </div>
+  </div>
+
+  <div class="reward" data-quest="2">
+    <p><b>Belohnung:</b> Molly hängt den Plan an die Stalltür. «Thank you! Great job!» Abzeichen <b>Week Planner</b>.</p>
+    <p class="status"></p>
+  </div>
+</section>
+
+<!-- QUEST 3 -->
+<section class="card" id="q3">
+  <h2>Quest 3: Die Steckbrief-Karten</h2>
+  <h3><span class="step-tag">Auftrag</span></h3>
+  <p>Molly legt einen Stapel Karten auf den Tisch:</p>
+  <blockquote class="say">«Look! Here are cards about the new kids. But some words are missing. (Es fehlen Wörter.) Please help!»</blockquote>
+
+  <h3><span class="step-tag">Entdecken</span></h3>
+  <p>Lies diese Sätze von Pixel:</p>
+  <ul>
+    <li>I am Molly.</li><li>Pixel is a pony.</li><li>You are my new helper.</li><li>We are at the camp.</li>
+    <li>Lena is ten.</li><li>They are from Basel.</li><li>Tom is from London.</li>
+  </ul>
+  <ol>
+    <li>Zeichne drei Kästen: <b>am</b>, <b>is</b>, <b>are</b>. Schreib jeden Satz in den passenden Kasten.</li>
+    <li>Deine Vermutung: Wann steht am? Wann is? Wann are?</li>
+  </ol>
+  <p>Lies jetzt diese Sätze:</p>
+  <ul>
+    <li>I'm Molly. My pony is Pixel.</li>
+    <li>Tom has a horse. His horse is Storm.</li>
+    <li>Lena has a horse. Her horse is Daisy.</li>
+    <li>You are new. What is your name?</li>
+  </ul>
+  <ol start="3"><li>Deine Vermutung: Wann steht his? Wann steht her?</li></ol>
+
+  <h3><span class="step-tag">Bauplan</span></h3>
+  <p>Pixel stampft mit dem Huf: «Two tricks for you!»</p>
+  <p><b>Trick A: am, is, are</b></p>
+  <ol>
+    <li>Such zuerst: Wer ist gemeint?</li>
+    <li><b>I</b> → <b>am</b>. I'm ist die Kurzform von I am.</li>
+    <li><b>he, she</b> oder ein Name (Tom, Lena, Pixel) → <b>is</b>.</li>
+    <li><b>you, we, they</b> oder zwei Namen → <b>are</b>.</li>
+  </ol>
+  <p><b>Trick B: my, your, his, her</b></p>
+  <div class="table-scroll"><table>
+    <tr><th>Wer?</th><th>Wort</th><th>Deutsch</th></tr>
+    <tr><td>I</td><td>my</td><td>mein</td></tr>
+    <tr><td>you</td><td>your</td><td>dein</td></tr>
+    <tr><td>he (Junge, Mann)</td><td>his</td><td>sein</td></tr>
+    <tr><td>she (Mädchen, Frau)</td><td>her</td><td>ihr</td></tr>
+  </table></div>
+  <p>Wichtig: Frag immer, wem es gehört. Gehört es einem Jungen? Dann his. Gehört es einem Mädchen? Dann her.</p>
+  <div class="example">
+    <b>Gelöstes Beispiel.</b> «Lena ... ten. ... hobby is dancing.»
+    <ol>
+      <li>Wer? Lena. Ein Name, also <b>is</b>.</li>
+      <li>Wem gehört das Hobby? Lena. Sie ist ein Mädchen, also <b>her</b>.</li>
+      <li>Lösung: <b>Lena is ten. Her hobby is dancing.</b></li>
+    </ol>
+  </div>
+
+  <h3><span class="step-tag">Anwenden</span></h3>
+
+  <div class="task" data-task="3.1">
+    <div class="task-title"><span class="num">3.1</span>am, is oder are?</div>
+    <div class="level"><b>★</b> Schreib die Sätze ab. Setz am, is oder are ein.
+      <ul>
+        <li>a) I ... the new helper.</li><li>b) Coach Molly ... from Canada.</li><li>c) The kids ... in the camp.</li>
+        <li>d) You ... my friend.</li><li>e) Pixel ... twelve years old.</li><li>f) We ... from Switzerland.</li>
+      </ul></div>
+    <div class="level"><b>★★</b> Schreib zu jeder Karte zwei Sätze. Beispiel: Ben · 9 · Paris = Ben is nine. He is from Paris.
+      <ul>
+        <li>Karte 1: Tom · 12 · London</li><li>Karte 2: Mia · 13 · Bern</li>
+        <li>Karte 3: Lena and Ella · 10 · Zurich</li><li>Karte 4: You · 11 · Basel</li>
+      </ul></div>
+    <div class="task-foot">
+      <details class="hint"><summary>Tipp 1</summary><p>Unterstreich zuerst die Person. Schau dann in Trick A.</p>
+        <details><summary>Tipp 2</summary><p>★ Nur bei I steht am. Ein Name bekommt is. we, you und the kids bekommen are. ★★ Ein Junge: He is. Ein Mädchen: She is. Zwei Namen: They are.</p></details></details>
+      <div class="done">Geschafft: <button class="pt" data-p="1">★</button><button class="pt" data-p="2">★★</button></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="3.2">
+    <div class="task-title"><span class="num">3.2</span>my, your, his oder her? <span style="font-weight:600">(lucky number = Glückszahl)</span></div>
+    <div class="level"><b>★</b> Wähl das richtige Wort. Schreib den Satz ab.
+      <ul>
+        <li>a) Tom has a pony. (His / Her) pony is Storm.</li>
+        <li>b) Lena likes dancing. (His / Her) favourite activity is dancing.</li>
+        <li>c) I am Molly. (My / Your) camp is Sunny Hill.</li>
+        <li>d) «Hi! What is (my / your) name?»</li>
+        <li>e) Pixel says: «(My / His) hobby is jumping!»</li>
+      </ul></div>
+    <div class="level"><b>★★</b> Schreib das fehlende Wort.
+      <ul>
+        <li>a) Mia has a horse. ... horse is Daisy.</li>
+        <li>b) Ben likes climbing. ... favourite activity is climbing.</li>
+        <li>c) «Hello, I'm Ben. ... lucky number is 7.»</li>
+        <li>d) «Nice to meet you! What is ... lucky number?»</li>
+        <li>e) Molly has a pony. Pixel is ... pony.</li>
+      </ul></div>
+    <div class="task-foot">
+      <details class="hint"><summary>Tipp 1</summary><p>Frag dich: Wem gehört es?</p>
+        <details><summary>Tipp 2</summary><p>Tom und Ben sind Jungen: his. Lena, Mia und Molly sind Mädchen oder Frauen: her. Spricht jemand über sich: my. Fragt man jemanden: your.</p></details></details>
+      <div class="done">Geschafft: <button class="pt" data-p="1">★</button><button class="pt" data-p="2">★★</button></div>
+    </div>
+  </div>
+
+  <div class="reward" data-quest="3">
+    <p><b>Belohnung:</b> Pixel macht einen Freudensprung: «You are a star!» Abzeichen <b>Card Master</b>.</p>
+    <p class="status"></p>
+    <p>Zeit für eine Pause? Hol dir ein Glas Wasser. Dann geht es weiter.</p>
+  </div>
+</section>
+
+<!-- QUEST 4 -->
+<section class="card" id="q4">
+  <h2>Quest 4: Der Mystery Guest</h2>
+  <h3><span class="step-tag">Auftrag</span></h3>
+  <p>Molly flüstert:</p>
+  <blockquote class="say">«Psst! A mystery guest is at the gate. (Ein geheimer Gast ist am Tor.) Who is he? Ask him questions in English!»</blockquote>
+
+  <h3><span class="step-tag">Entdecken</span></h3>
+  <p>Pixel übt mit dir. Hier sind Pixels Antworten. Aber wie lautet die Frage?</p>
+  <ul>
+    <li>«My name is Pixel.» → ... is your name?</li>
+    <li>«I am twelve.» → ... old are you?</li>
+    <li>«I'm from Roblox.» → ... are you from?</li>
+    <li>«My contact person is Molly.» → ... is your contact person?</li>
+  </ul>
+  <ol>
+    <li>Rate das fehlende Fragewort. Schreib deine Ideen auf.</li>
+    <li>Deine Vermutung: Welches Fragewort fragt nach einem Ort? Welches nach einer Person?</li>
+  </ol>
+
+  <h3><span class="step-tag">Bauplan</span></h3>
+  <p>Pixel nickt: «Questions are easy. Look!»</p>
+  <ol>
+    <li>Überleg zuerst: Was willst du wissen?</li>
+    <li>Wähl das Fragewort aus der Tabelle.</li>
+    <li>Das Fragewort steht ganz vorne.</li>
+    <li>Dann kommt is oder are.</li>
+    <li>Am Ende steht ein Fragezeichen.</li>
+  </ol>
+  <div class="table-scroll"><table>
+    <tr><th>Ich will wissen</th><th>Fragewort</th><th>Deutsch</th><th>Beispiel</th></tr>
+    <tr><td>Name, Hobby</td><td>What</td><td>Was, Wie</td><td>What is your name?</td></tr>
+    <tr><td>Alter</td><td>How old</td><td>Wie alt</td><td>How old are you?</td></tr>
+    <tr><td>Herkunft</td><td>Where</td><td>Wo, Woher</td><td>Where are you from?</td></tr>
+    <tr><td>eine Person</td><td>Who</td><td>Wer</td><td>Who is your contact person?</td></tr>
+  </table></div>
+  <p>Eine Kontaktperson ist jemand, den das Camp anrufen kann.</p>
+  <div class="example">
+    <b>Gelöstes Beispiel.</b> Du willst wissen, woher Pixel kommt.
+    <ol>
+      <li>Das ist ein Ort, also <b>Where</b>.</li>
+      <li>Where + are + you + from + ?</li>
+      <li>Frage: <b>Where are you from?</b></li>
+    </ol>
+  </div>
+
+  <h3><span class="step-tag">Anwenden</span></h3>
+
+  <div class="task" data-task="4.1">
+    <div class="task-title"><span class="num">4.1</span>Fragen bauen</div>
+    <div class="level"><b>★</b> Setz das Fragewort ein: <b>What · How · Where · Who</b>
+      <ul>
+        <li>a) ... is your name?</li><li>b) ... old are you?</li><li>c) ... are you from?</li>
+        <li>d) ... is your favourite activity?</li><li>e) ... is your contact person?</li>
+      </ul></div>
+    <div class="level"><b>★★</b> Schreib die ganze Frage auf Englisch. Du willst wissen:
+      <ul>
+        <li>a) den Namen</li><li>b) das Alter</li><li>c) woher er kommt</li><li>d) sein Lieblingshobby</li><li>e) seine Kontaktperson</li>
+      </ul></div>
+    <div class="task-foot">
+      <details class="hint"><summary>Tipp 1</summary><p>Was will die Frage wissen: Name, Alter, Ort oder Person?</p>
+        <details><summary>Tipp 2</summary><p>Alter: How. Ort: Where. Person: Who. Name und Hobby: What.</p></details></details>
+      <div class="done">Geschafft: <button class="pt" data-p="1">★</button><button class="pt" data-p="2">★★</button></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="4.2">
+    <div class="task-title"><span class="num">4.2</span>Das Interview (live mit Papa)</div>
+    <p><span class="funk">FUNK</span> «Mystery Guest, please!» Papa spielt jetzt den Gast. Er antwortet nur auf Englisch.</p>
+    <ol>
+      <li>Zeichne einen leeren Steckbrief: Name · Age · From · Favourite activity · Contact person.</li>
+      <li>Stell deine 5 Fragen aus 4.1. Schreib die Antworten in den Steckbrief.</li>
+      <li>Verstehst du etwas nicht? Dann sag einen Rettungs-Satz:
+        <ul>
+          <li>«Can you repeat, please?» (Kannst du das wiederholen?)</li>
+          <li>«Can you spell it, please?» (Kannst du es buchstabieren?)</li>
+        </ul></li>
+      <li>Am Schluss sagst du: «Thank you!»</li>
+    </ol>
+    <div class="level"><b>★</b> Du darfst die Fragen ablesen.</div>
+    <div class="level"><b>★★</b> Frag ohne Blatt. Danach schreibst du 3 Sätze über den Gast. Benutze <b>His</b> oder <b>He is</b>. Zum Beispiel: «His name is ...»</div>
+    <div class="task-foot">
+      <details class="hint"><summary>Tipp 1</summary><p>Lies jede Frage zuerst leise. Dann sag sie laut.</p>
+        <details><summary>Tipp 2</summary><p>Verstehst du nichts? Sag: «Can you repeat, please?» Bei Namen sag: «Can you spell it, please?»</p></details></details>
+      <div class="done">Geschafft: <button class="pt" data-p="1">★</button><button class="pt" data-p="2">★★</button></div>
+    </div>
+  </div>
+
+  <div class="reward" data-quest="4">
+    <p><b>Belohnung:</b> Molly lacht: «He is our new sailing teacher!» (Er ist unser neuer Segellehrer!) Abzeichen <b>Question Queen</b>.</p>
+    <p class="status"></p>
+  </div>
+</section>
+
+<!-- QUEST 5 -->
+<section class="card" id="q5">
+  <h2>Quest 5: Die grosse Anmeldung</h2>
+  <h3><span class="step-tag">Auftrag</span></h3>
+  <p>Das Funkgerät knistert. Molly ruft:</p>
+  <blockquote class="say">«The radio! A new girl wants to come to camp. Listen and fill in the form, please!»</blockquote>
+
+  <h3><span class="step-tag">Entdecken</span></h3>
+  <p>Schau dir das Anmeldeformular an:</p>
+  <div class="table-scroll"><table class="form-blank">
+    <tr><th colspan="2">Sunny Hill Pony Camp: Registration form</th></tr>
+    <tr><td>First name</td><td></td></tr><tr><td>Last name</td><td></td></tr><tr><td>Age</td><td></td></tr>
+    <tr><td>From (town, country)</td><td></td></tr><tr><td>Languages</td><td></td></tr><tr><td>Lucky number</td><td></td></tr>
+    <tr><td>Favourite activities</td><td></td></tr><tr><td>Arrival day</td><td></td></tr><tr><td>Contact person</td><td></td></tr>
+  </table></div>
+  <ol>
+    <li>Was bedeutet jedes Feld? Rate. Schreib das deutsche Wort dazu.</li>
+    <li>Deine Vermutung: Welche Wörter wirst du im Funk hören?</li>
+  </ol>
+
+  <h3><span class="step-tag">Bauplan</span></h3>
+  <p>Pixel spitzt die Ohren: «Listen like a detective!»</p>
+  <ol>
+    <li>Lies das Formular vor dem Hören. Was wird gesucht?</li>
+    <li>Beim ersten Hören: nur zuhören. Nichts schreiben.</li>
+    <li>Beim zweiten Hören: Stichwörter schreiben. Keine ganzen Sätze.</li>
+    <li>Achte auf die Signal-Sätze in der Tabelle.</li>
+    <li>Buchstabierte Namen schreibst du Buchstabe für Buchstabe. Wie in Quest 1!</li>
+    <li>Übertrag alles sauber ins Formular. Namen beginnen gross. Kein Feld bleibt leer.</li>
+  </ol>
+  <div class="table-scroll"><table>
+    <tr><th>Signal-Satz</th><th>gehört ins Feld</th></tr>
+    <tr><td>My name is ...</td><td>First name, Last name</td></tr>
+    <tr><td>I'm ... years old.</td><td>Age</td></tr>
+    <tr><td>I'm from ... / I live in ...</td><td>From</td></tr>
+    <tr><td>I speak ...</td><td>Languages</td></tr>
+    <tr><td>My lucky number is ...</td><td>Lucky number</td></tr>
+    <tr><td>I like ... / I love ...</td><td>Favourite activities</td></tr>
+    <tr><td>I can come on ...</td><td>Arrival day</td></tr>
+    <tr><td>My contact person is ...</td><td>Contact person</td></tr>
+  </table></div>
+  <div class="example">
+    <b>Gelöstes Beispiel.</b> Der Funk sagt: «Hi, I'm Ben. My lucky number is twenty-one.»
+    <ol>
+      <li>Signal «I'm»: First name = <b>Ben</b></li>
+      <li>Signal «My lucky number is»: twenty-one = <b>21</b></li>
+    </ol>
+  </div>
+
+  <h3><span class="step-tag">Anwenden</span></h3>
+
+  <div class="task" data-task="5.1">
+    <div class="task-title"><span class="num">5.1</span>Zoe am Funk</div>
+    <p><span class="funk">FUNK</span> «Radio card 5, please!» Papa liest die Karte zweimal.</p>
+    <div class="level"><b>★</b> Wähl die richtige Antwort. Schreib sie auf.
+      <ul>
+        <li>a) Her last name is: Clerk / Clark / Clarke</li>
+        <li>b) She is: 11 / 12 / 13 years old</li>
+        <li>c) She is from: London / Dublin / Berlin</li>
+        <li>d) She speaks: English and German / English and Irish / French</li>
+        <li>e) Her lucky number is: 13 / 23 / 32</li>
+        <li>f) She likes: sailing and cooking / horse riding and dancing / hiking and climbing</li>
+      </ul></div>
+    <div class="level"><b>★★</b> Schreib den Text ab. Füll die Lücken.
+      <p>Her first name is Zoe. Her last name is ...... . She is ...... years old. She is from ...... in Ireland. She speaks ...... and ...... . Her lucky number is ...... . Her favourite activities are ...... and ...... .</p></div>
+    <div class="task-foot">
+      <details class="hint"><summary>Tipp 1</summary><p>Lies vor dem Hören alle Antworten. Unterstreich, was verschieden ist.</p>
+        <details><summary>Tipp 2</summary><p>Der Nachname wird buchstabiert. Bei der Glückszahl: Hast du thir-TEEN oder TWEN-ty gehört?</p></details></details>
+      <div class="done">Geschafft: <button class="pt" data-p="1">★</button><button class="pt" data-p="2">★★</button></div>
+    </div>
+  </div>
+
+  <div class="task" data-task="5.2">
+    <div class="task-title"><span class="num">5.2</span>Das Anmeldeformular</div>
+    <p>Zeichne das Formular von oben auf dein Papier.</p>
+    <div class="level"><b>★</b> Füll das Formular für Zoe aus. Papa darf Karte 5 nochmals lesen.</div>
+    <div class="level"><b>★★</b> Ein Junge funkt auch! <span class="funk">FUNK</span> «Radio card 6, please!» Füll das Formular für ihn aus.</div>
+    <div class="task-foot">
+      <details class="hint"><summary>Tipp 1</summary><p>Nimm deine Antworten aus 5.1 oder deine Stichwörter.</p>
+        <details><summary>Tipp 2</summary><p>Arrival day kommt nach «I can come on». Contact person kommt nach «My contact person is».</p></details></details>
+      <div class="done">Geschafft: <button class="pt" data-p="1">★</button><button class="pt" data-p="2">★★</button></div>
+    </div>
+  </div>
+
+  <div class="reward" data-quest="5">
+    <p><b>Belohnung:</b> Molly klatscht: «Perfect! The camp is ready.» Abzeichen <b>Camp Pro</b>.</p>
+    <p class="status"></p>
+  </div>
+</section>
+
+<!-- CHECK -->
+<section class="card" id="check">
+  <h2>Missions-Check: Das Goldene Hufeisen</h2>
+  <p>Jetzt zeigst du, was du kannst. Molly und Pixel helfen nicht mehr. Keine Tipps, keine Lösungen.</p>
+  <div class="task"><div class="task-title"><span class="num">C1</span>Codes</div>
+    <p><span class="funk">FUNK</span> «Check card 1, please!» Schreib die 2 Codes auf.</p></div>
+  <div class="task"><div class="task-title"><span class="num">C2</span>Hobbys</div>
+    <p>Schreib das englische Wort auf: kochen · klettern · segeln · reiten · wandern · tanzen</p></div>
+  <div class="task"><div class="task-title"><span class="num">C3</span>Wochentage</div>
+    <p>Schreib alle 7 Tage auf, von Monday bis Sunday. Achte auf jeden Buchstaben.</p></div>
+  <div class="task"><div class="task-title"><span class="num">C4</span>Setz das richtige Wort ein (am, is, are, my, your, his, her)</div>
+    <ul>
+      <li>a) My sister ... twelve. ... name is Nora.</li>
+      <li>b) I ... from Basel. ... pony is Pixel.</li>
+      <li>c) Tom and Ben ... friends.</li>
+      <li>d) Ben likes sailing. ... boat is red.</li>
+      <li>e) «You ... nice! What is ... name?»</li>
+    </ul></div>
+  <div class="task"><div class="task-title"><span class="num">C5</span>Fragewörter: What, How, Where oder Who?</div>
+    <ul><li>a) ... are you from?</li><li>b) ... is your contact person?</li><li>c) ... old are you?</li><li>d) ... is your name?</li></ul></div>
+  <div class="task"><div class="task-title"><span class="num">C6</span>Das letzte Formular</div>
+    <p><span class="funk">FUNK</span> «Check card 2, please!» Papa liest zweimal. Zeichne ein neues Formular und füll es aus.</p></div>
+
+  <p><b>Fertig?</b> Vergleich jetzt mit den Lösungen unten. Dann malst du deine Farben.</p>
+
+  <h3>Wie gut kann ich das?</h3>
+  <p>Tipp bei jedem Lernziel eine Farbe an: <b>grün</b> = kann ich, <b>gelb</b> = fast, <b>rot</b> = brauche Übung.</p>
+  <div class="table-scroll"><table class="self" id="selfTable">
+    <tr><th>Lernziel</th><th>Quest</th><th>Meine Farbe</th></tr>
+  </table></div>
+  <p>Gelb oder rot? Kein Problem. Spiel diese Quest nochmals, zuerst mit ★.</p>
+
+  <div class="golden" id="golden">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3v8a7 7 0 0 0 14 0V3h-4v8a3 3 0 0 1-6 0V3z" fill="#e0a800"/></svg>
+    <h2>Das Goldene Hufeisen gehört dir!</h2>
+    <p>Du hast alle Quests geschafft und dich selbst eingeschätzt. Coach Molly sagt: «You are the best camp helper ever!»</p>
+  </div>
+</section>
+
+<!-- SOLUTIONS -->
+<section class="card" id="loesungen">
+  <h2>STOPP: Lösungen</h2>
+  <p><b>Erst anschauen, wenn du fertig bist.</b></p>
+  <button class="cta" id="solBtn">Ich bin fertig. Lösungen zeigen</button>
+  <div id="solutions" hidden>
+    <h3>Quest 1</h3>
+    <ul>
+      <li>Probe-Code: <b>YES25</b></li>
+      <li>1.1: ★ <b>PONY14</b> · ★★ <b>PIXEL40</b></li>
+      <li>1.2: ★ <b>STABLE8</b> · ★★ <b>HAY1330</b></li>
+      <li>1.3: ★ <b>CAMP20</b> · ★★ <b>JUMP9917</b></li>
+    </ul>
+    <h3>Quest 2</h3>
+    <ul>
+      <li>Entdecken: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday. Alle Tage enden auf -day. Alle Hobbys enden auf -ing.</li>
+      <li>2.1: ★ Monday bis Sunday wie oben. ★★ rückwärts: Sunday, Saturday, Friday, Thursday, Wednesday, Tuesday, Monday.</li>
+      <li>2.2 (★ und ★★):</li>
+    </ul>
+    <div class="table-scroll"><table>
+      <tr><th>Day</th><th>Activity</th></tr>
+      <tr><td>Monday</td><td>hiking</td></tr><tr><td>Tuesday</td><td>horse riding</td></tr><tr><td>Wednesday</td><td>climbing</td></tr>
+      <tr><td>Thursday</td><td>sailing</td></tr><tr><td>Friday</td><td>cooking</td></tr><tr><td>Saturday</td><td>dancing</td></tr><tr><td>Sunday</td><td>free day</td></tr>
+    </table></div>
+    <ul><li>2.3: 1 sailing · 2 cooking · 3 hiking · 4 climbing · 5 dancing · 6 horse riding</li></ul>
+    <h3>Quest 3</h3>
+    <ul>
+      <li>Entdecken: <b>am</b>: I am Molly. <b>is</b>: Pixel is a pony. Lena is ten. Tom is from London. <b>are</b>: You are my new helper. We are at the camp. They are from Basel. Bei Jungen steht his, bei Mädchen her.</li>
+      <li>3.1 ★: a) am · b) is · c) are · d) are · e) is · f) are</li>
+      <li>3.1 ★★: Tom is twelve. He is from London. · Mia is thirteen. She is from Bern. · Lena and Ella are ten. They are from Zurich. · You are eleven. You are from Basel. (Zahlen als Ziffern sind auch richtig.)</li>
+      <li>3.2 ★: a) His · b) Her · c) My · d) your · e) My</li>
+      <li>3.2 ★★: a) Her · b) His · c) My · d) your · e) her</li>
+    </ul>
+    <h3>Quest 4</h3>
+    <ul>
+      <li>Entdecken: What · How · Where · Who. Ort: Where. Person: Who.</li>
+      <li>4.1 ★: a) What · b) How · c) Where · d) What · e) Who</li>
+      <li>4.1 ★★: a) What is your name? · b) How old are you? · c) Where are you from? · d) What is your favourite activity? · e) Who is your contact person?</li>
+      <li>4.2 Steckbrief: Name: Max Hayfield · Age: 40 · From: Toronto, Canada · Favourite activity: sailing · Contact person: Kate (his sister)</li>
+      <li>4.2 ★★ zum Beispiel: His name is Max Hayfield. He is forty. He is from Toronto, Canada. His favourite activity is sailing.</li>
+    </ul>
+    <h3>Quest 5</h3>
+    <ul>
+      <li>Entdecken: First name = Vorname · Last name = Nachname · Age = Alter · From = Herkunft · Languages = Sprachen · Lucky number = Glückszahl · Favourite activities = Lieblingshobbys · Arrival day = Ankunftstag · Contact person = Kontaktperson</li>
+      <li>5.1 ★: a) Clark · b) 11 · c) Dublin · d) English and Irish · e) 23 · f) horse riding and dancing</li>
+      <li>5.1 ★★: Clark · eleven · Dublin · English · Irish · 23 · horse riding · dancing</li>
+      <li>5.2 und Check C6:</li>
+    </ul>
+    <div class="table-scroll"><table>
+      <tr><th>Field</th><th>Zoe (5.2 ★)</th><th>Luca (5.2 ★★)</th><th>Emma (Check C6)</th></tr>
+      <tr><td>First name</td><td>Zoe</td><td>Luca</td><td>Emma</td></tr>
+      <tr><td>Last name</td><td>Clark</td><td>Rossi</td><td>Hill</td></tr>
+      <tr><td>Age</td><td>11</td><td>12</td><td>10</td></tr>
+      <tr><td>From</td><td>Dublin, Ireland</td><td>Lugano, Switzerland</td><td>Bern, Switzerland</td></tr>
+      <tr><td>Languages</td><td>English, Irish</td><td>Italian, German, English</td><td>German, French</td></tr>
+      <tr><td>Lucky number</td><td>23</td><td>17</td><td>40</td></tr>
+      <tr><td>Favourite activities</td><td>horse riding, dancing</td><td>climbing, cooking</td><td>hiking</td></tr>
+      <tr><td>Arrival day</td><td>Monday</td><td>Wednesday</td><td>Thursday</td></tr>
+      <tr><td>Contact person</td><td>Sarah (her mum)</td><td>Marco (his dad)</td><td>Rosa (her grandma)</td></tr>
+    </table></div>
+    <h3>Missions-Check</h3>
+    <ul>
+      <li>C1: <b>GATE58</b> · <b>HIKE16</b></li>
+      <li>C2: kochen = cooking · klettern = climbing · segeln = sailing · reiten = horse riding · wandern = hiking · tanzen = dancing</li>
+      <li>C3: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday</li>
+      <li>C4: a) is, Her · b) am, My · c) are · d) His · e) are, your</li>
+      <li>C5: a) Where · b) Who · c) How · d) What</li>
+      <li>C6: siehe Tabelle oben, Spalte Emma</li>
+    </ul>
+  </div>
+</section>
+
+<p style="text-align:center"><button class="ghost" id="resetBtn">Spiel neu starten</button></p>
+<footer>Pony Camp Obby · ein Lernspiel zu Englisch Unit 1</footer>
+</main>
+
+<script>
+(function(){
+  var KEY = 'ponycamp-v1';
+  var QUESTS = {1:['1.1','1.2','1.3'],2:['2.1','2.2','2.3'],3:['3.1','3.2'],4:['4.1','4.2'],5:['5.1','5.2']};
+  var BADGES = {1:'Code Cracker',2:'Week Planner',3:'Card Master',4:'Question Queen',5:'Camp Pro'};
+  var GOALS = [
+    ['1. Buchstaben und Zahlen hören und als Code schreiben','1'],
+    ['2. Hobbys verstehen und benennen','2'],
+    ['3. Wochentage aufsagen und richtig schreiben','2'],
+    ['4. am, is, are richtig einsetzen','3'],
+    ['5. Fragen mit what, how, where, who stellen','4'],
+    ['6. my, your, his, her richtig brauchen','3'],
+    ['7. Infos über Personen heraushören','5'],
+    ['8. Ein Camp registration form ausfüllen','5']
+  ];
+  var state = {pts:{}, self:{}};
+  try { var s = JSON.parse(localStorage.getItem(KEY)); if (s && s.pts) state = s; } catch(e){}
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){} }
+
+  // self-assessment rows
+  var tbl = document.getElementById('selfTable');
+  GOALS.forEach(function(g, i){
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td>'+g[0]+'</td><td>'+g[1]+'</td><td>' +
+      '<button class="dot g" data-goal="'+i+'" data-c="g" aria-label="grün"></button>' +
+      '<button class="dot y" data-goal="'+i+'" data-c="y" aria-label="gelb"></button>' +
+      '<button class="dot r" data-goal="'+i+'" data-c="r" aria-label="rot"></button></td>';
+    tbl.appendChild(tr);
+  });
+
+  // badge bar
+  var bar = document.getElementById('badgeBar');
+  Object.keys(BADGES).forEach(function(q){
+    var d = document.createElement('div');
+    d.className = 'badge-slot'; d.dataset.q = q; d.textContent = 'Q'+q; d.title = BADGES[q];
+    bar.appendChild(d);
+  });
+
+  function questDone(q){ return QUESTS[q].every(function(t){ return (state.pts[t]||0) > 0; }); }
+
+  function render(){
+    var total = 0;
+    Object.keys(state.pts).forEach(function(k){ total += state.pts[k]||0; });
+    document.getElementById('total').textContent = total;
+    document.querySelectorAll('.task[data-task]').forEach(function(el){
+      var v = state.pts[el.dataset.task]||0;
+      el.querySelectorAll('.pt').forEach(function(b){ b.setAttribute('aria-pressed', String(+b.dataset.p === v)); });
+    });
+    var all = true;
+    Object.keys(QUESTS).forEach(function(q){
+      var done = questDone(q); if (!done) all = false;
+      var slot = bar.querySelector('[data-q="'+q+'"]'); slot.classList.toggle('on', done);
+      var r = document.querySelector('.reward[data-quest="'+q+'"]');
+      r.classList.toggle('unlocked', done);
+      r.querySelector('.status').textContent = done
+        ? 'Abzeichen «'+BADGES[q]+'» freigeschaltet!'
+        : 'Klick bei jeder Aufgabe auf ★ oder ★★. Dann bekommst du das Abzeichen.';
+    });
+    var selfDone = 0;
+    document.querySelectorAll('.dot').forEach(function(b){
+      var on = state.self[b.dataset.goal] === b.dataset.c;
+      b.setAttribute('aria-pressed', String(on));
+    });
+    Object.keys(state.self).forEach(function(k){ if (state.self[k]) selfDone++; });
+    document.getElementById('golden').classList.toggle('show', all && selfDone === GOALS.length);
+  }
+
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('.pt');
+    if (b){
+      var t = b.closest('.task').dataset.task, p = +b.dataset.p;
+      state.pts[t] = (state.pts[t] === p) ? 0 : p; save(); render(); return;
+    }
+    var d = e.target.closest('.dot');
+    if (d){
+      state.self[d.dataset.goal] = (state.self[d.dataset.goal] === d.dataset.c) ? '' : d.dataset.c;
+      save(); render(); return;
+    }
+  });
+
+  var solBtn = document.getElementById('solBtn'), armed = false;
+  solBtn.addEventListener('click', function(){
+    if (!armed){ armed = true; solBtn.textContent = 'Wirklich fertig? Dann klick nochmals.'; solBtn.classList.add('alt'); return; }
+    document.getElementById('solutions').hidden = false; solBtn.hidden = true;
+  });
+
+  var resetBtn = document.getElementById('resetBtn'), rArmed = false;
+  resetBtn.addEventListener('click', function(){
+    if (!rArmed){ rArmed = true; resetBtn.textContent = 'Sicher? Alle Punkte werden gelöscht. Nochmals klicken.'; return; }
+    state = {pts:{}, self:{}}; save(); rArmed = false; resetBtn.textContent = 'Spiel neu starten';
+    document.getElementById('solutions').hidden = true; solBtn.hidden = false; armed = false;
+    solBtn.textContent = 'Ich bin fertig. Lösungen zeigen'; solBtn.classList.remove('alt');
+    render(); window.scrollTo(0,0);
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
