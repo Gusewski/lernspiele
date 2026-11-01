@@ -1,0 +1,922 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Der dreizehnte Lehrling – Jahr 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f0e6;
+    --card: #fffdf8;
+    --ink: #23201b;
+    --muted: #6a6256;
+    --line: #e2d8c5;
+    --accent: #8a2f1d;
+    --accent-soft: #f3e2dc;
+    --star: #a87720;
+    --raven: #2c3038;
+    --ok: #2f6b3a;
+    --warn: #9a6a00;
+    --stop: #a3261a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15161a;
+      --card: #1e2026;
+      --ink: #ece6da;
+      --muted: #a69e90;
+      --line: #343843;
+      --accent: #e0846c;
+      --accent-soft: #3a2621;
+      --star: #e2b75e;
+      --raven: #c9ced8;
+      --ok: #7cc18a;
+      --warn: #e2b75e;
+      --stop: #ff8a7a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15161a; --card: #1e2026; --ink: #ece6da; --muted: #a69e90; --line: #343843;
+    --accent: #e0846c; --accent-soft: #3a2621; --star: #e2b75e; --raven: #c9ced8;
+    --ok: #7cc18a; --warn: #e2b75e; --stop: #ff8a7a;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 18px/1.6 "Source Sans 3", system-ui, -apple-system, sans-serif;
+  }
+  main { max-width: 760px; margin: 0 auto; padding: 24px 16px 80px; }
+  h1, h2, h3 { font-family: "Fraunces", Georgia, serif; line-height: 1.2; }
+  h1 { font-size: 2.1rem; margin: 0.2em 0 0.2em; }
+  h2 { font-size: 1.55rem; margin: 2.2em 0 0.6em; padding-top: 0.4em; border-top: 2px solid var(--line); }
+  h3 { font-size: 1.15rem; margin: 1.4em 0 0.4em; }
+  p { margin: 0.5em 0; }
+  a { color: var(--accent); }
+  .kicker { color: var(--muted); font-size: 0.95rem; letter-spacing: 0.04em; text-transform: uppercase; margin: 0; }
+  .lead { font-size: 1.1rem; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; margin: 14px 0; }
+  .say { border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 0 10px 10px 0; padding: 10px 14px; margin: 12px 0; }
+  .say b { color: var(--accent); }
+  .step { display: inline-block; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-right: 6px; }
+  .time { float: right; font-size: 0.85rem; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; }
+  .word { font-size: 0.95rem; color: var(--muted); }
+  .word b { color: var(--ink); }
+  .plan { border: 2px dashed var(--star); border-radius: 14px; padding: 14px 18px; margin: 14px 0; }
+  .plan h3 { margin-top: 0.2em; color: var(--star); }
+  .plan ol { padding-left: 1.3em; margin: 0.4em 0; }
+  .example { font-size: 0.95rem; color: var(--muted); border-top: 1px solid var(--line); margin-top: 10px; padding-top: 8px; }
+  .task { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin: 12px 0; background: var(--card); }
+  .task-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .num { font-weight: 700; font-family: "Fraunces", Georgia, serif; font-size: 1.1rem; }
+  .help { font-size: 0.9rem; white-space: nowrap; }
+  .lvl { margin: 8px 0; padding-left: 2.6em; text-indent: -2.6em; }
+  .star { display: inline-block; width: 2.6em; text-indent: 0; color: var(--star); font-weight: 700; }
+  .where { font-size: 0.9rem; color: var(--muted); margin-top: 6px; }
+  .reward { display: flex; gap: 12px; align-items: flex-start; border-radius: 12px; padding: 12px 14px; margin: 12px 0; background: var(--card); border: 1px solid var(--line); }
+  .feather { flex: none; width: 34px; height: 34px; }
+  .spark { font-size: 0.95rem; color: var(--muted); margin-top: 6px; }
+  .tracker { display: grid; grid-template-columns: repeat(auto-fill, minmax(52px, 1fr)); gap: 8px; margin: 10px 0; }
+  .tracker button {
+    font: 600 0.95rem "Source Sans 3", system-ui, sans-serif;
+    border: 1px solid var(--line); background: var(--card); color: var(--muted);
+    border-radius: 10px; padding: 8px 0; cursor: pointer;
+  }
+  .tracker button.on { background: var(--raven); color: var(--bg); border-color: var(--raven); }
+  .tracker button.seal { grid-column: span 2; }
+  .toc { columns: 2; column-gap: 24px; padding-left: 1.2em; }
+  .toc li { break-inside: avoid; margin: 2px 0; }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 0.95rem; }
+  th, td { border: 1px solid var(--line); padding: 8px; text-align: left; vertical-align: top; }
+  th { background: var(--accent-soft); }
+  .cards { display: grid; grid-template-columns: 1fr; gap: 6px; }
+  .cards div { border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; background: var(--card); }
+  .cards b { color: var(--accent); margin-right: 6px; }
+  details { border: 1px solid var(--line); border-radius: 12px; margin: 10px 0; background: var(--card); }
+  summary { cursor: pointer; padding: 10px 14px; font-weight: 700; }
+  details > div { padding: 0 14px 12px; }
+  details p { margin: 6px 0; }
+  .stop { border: 3px solid var(--stop); border-radius: 14px; padding: 14px 18px; margin: 20px 0; text-align: center; }
+  .stop strong { color: var(--stop); font-size: 1.3rem; font-family: "Fraunces", Georgia, serif; }
+  .soft { color: var(--muted); font-size: 0.95rem; }
+  .dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+  .g { background: #3a9a4d; } .y { background: #e0b12f; } .r { background: #c7402f; }
+  @media (max-width: 520px) {
+    body { font-size: 17px; }
+    h1 { font-size: 1.7rem; }
+    .toc { columns: 1; }
+    .time { float: none; display: inline-block; margin-bottom: 6px; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <p class="kicker">Lernspiel zu «Krabat» von Otfried Preussler</p>
+  <h1>Der dreizehnte Lehrling</h1>
+  <p class="lead"><b>Jahr 1: Das Spurenbuch der Mühle</b> (Kapitel 1 bis 12)</p>
+</header>
+
+<section>
+  <h2 id="mission">Deine Mission</h2>
+  <p>Du bist in die Mühle im Koselbruch geraten. Du bist der dreizehnte Lehrling, und niemand ausser Krabat kann dich sehen.</p>
+  <p>Ändern kannst du nichts, aber du kannst alles beobachten. Führe ein <b>Spurenbuch</b> über Krabats erstes Jahr. Am Jahresende kommt der Zunftbote und prüft, was in dieser Mühle wirklich gelernt wird.</p>
+
+  <h3>Die Figuren</h3>
+  <div class="card">
+    <p><b>Du:</b> der dreizehnte Lehrling, unsichtbar für alle ausser Krabat.</p>
+    <p><b>Krabat:</b> 14 Jahre alt, neu in der Mühle. Manchmal flüstert er dir eine Frage zu.</p>
+    <p><b>Mlynka:</b> eine alte Mühlmaus, die seit hundert Jahren in den Mauern wohnt. Sie gibt dir Aufträge und zeigt dir Baupläne.</p>
+    <p><b>Der Zunftbote:</b> Er besucht die Mühlen der Gegend und prüft am Jahresende dein Spurenbuch. Eine Zunft ist eine Vereinigung von Handwerkern eines Berufs.</p>
+  </div>
+
+  <h3>Material</h3>
+  <ul>
+    <li>das Buch «Krabat», ein Heft (dein Spurenbuch), Bleistift, Farbstifte (grün und rot)</li>
+    <li>Kapitel 3: ein Rucksack und drei dicke Bücher</li>
+    <li>Kapitel 9: ein Gegenstand aus der Küche, z. B. ein Kochlöffel</li>
+    <li>Jahres-Quest: 12 kleine Zettel und genug Platz am Boden</li>
+  </ul>
+
+  <h3>So spielst du</h3>
+  <div class="card">
+    <ol>
+      <li>Richte im Heft drei Seiten ein: <b>Chronik</b>, <b>Figuren</b> und <b>Spuren</b>.</li>
+      <li>Lies ein Kapitel. Danach spielst du die Quest dazu. Stell einen Timer auf <b>7 Minuten</b>.</li>
+      <li>Bei jeder Aufgabe wählst du: <span style="color:var(--star)">★</span> Basis oder <span style="color:var(--star)">★★</span> Profi.</li>
+      <li>Steckst du fest, tipp auf «Hilfe». Zuerst Tipp 1, erst dann Tipp 2.</li>
+      <li>Für jede Quest bekommst du eine Rabenfeder. Mit 12 Federn startet die Jahres-Quest.</li>
+    </ol>
+  </div>
+
+  <h3>Deine Federn</h3>
+  <p class="soft">Tipp eine Feder an, wenn du die Quest geschafft hast.</p>
+  <div class="tracker" id="tracker"></div>
+
+  <h3>Inhalt</h3>
+  <ol class="toc">
+    <li><a href="#k1">Die Mühle im Koselbruch</a></li>
+    <li><a href="#k2">Elf und einer</a></li>
+    <li><a href="#k3">Kein Honiglecken</a></li>
+    <li><a href="#k4">Wege im Traum</a></li>
+    <li><a href="#k5">Der mit der Hahnenfeder</a></li>
+    <li><a href="#k6">Husch auf die Stange</a></li>
+    <li><a href="#k7">Das Mal der geheimen Bruderschaft</a></li>
+    <li><a href="#k8">Gedenke, dass ich der Meister bin</a></li>
+    <li><a href="#k9">Ochsenblaschke aus Kamenz</a></li>
+    <li><a href="#k10">Feldmusik</a></li>
+    <li><a href="#k11">Das Andenken</a></li>
+    <li><a href="#k12">Ohne Pastor und Kreuz</a></li>
+  </ol>
+  <p><a href="#jahr">Jahres-Quest: Der Zunftbote</a> · <a href="#hilfen">Hilfen</a> · <a href="#loesungen">Lösungen</a> · <a href="#eltern">Für Eltern</a></p>
+</section>
+
+<!-- ===================== KAPITEL 1 ===================== -->
+<section>
+  <h2 id="k1">Quest 1: Die Mühle im Koselbruch</h2>
+  <span class="time">ca. 7 Min.</span>
+  <div class="say"><b>Mlynka:</b> «Pssst, hier unten in der Mauerritze! Ein neuer Junge steht vor dem Tor. Schreib auf, wie er hierherkam, sonst glaubt dir das später niemand.»</div>
+  <p><span class="step">Entdecken</span>Krabat hätte unterwegs umkehren können. An welcher Stelle hättest du umgedreht? Ein Stichwort genügt. Richtig oder falsch gibt es hier nicht.</p>
+
+  <div class="plan">
+    <h3>Bauplan 1: Der Chronik-Eintrag</h3>
+    <p>Eine <b>Chronik</b> ist ein Bericht, der Ereignisse der Reihe nach festhält. So schreibst du einen Eintrag:</p>
+    <ol>
+      <li><b>Wer?</b> Nenne die Hauptfigur.</li>
+      <li><b>Wo und wann?</b> Nenne Ort und Zeit, soweit du sie kennst.</li>
+      <li><b>Was?</b> Nur das wichtigste Ereignis, nicht jede Einzelheit.</li>
+      <li><b>Warum oder mit welcher Folge?</b> Ein Grund oder ein Ergebnis.</li>
+      <li>Schreib <b>3 Sätze</b> im Präsens (Gegenwart), in eigenen Worten und ohne wörtliche Rede.</li>
+    </ol>
+    <p class="example"><b>Beispiel «Rotkäppchen»:</b> Ein Mädchen namens Rotkäppchen bringt seiner kranken Grossmutter Kuchen und Wein in den Wald. Unterwegs trifft es den Wolf, der ihm den Weg zur Grossmutter entlockt. Der Wolf eilt voraus, frisst die Grossmutter und wartet in ihrem Bett auf Rotkäppchen.</p>
+  </div>
+
+  <div class="task">
+    <div class="task-head"><span class="num">1.1</span><a class="help" href="#h1-1">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Beantworte die vier W-Fragen aus dem Bauplan zu Kapitel 1 in Stichworten.</p>
+    <p class="lvl"><span class="star">★★</span>Schreib einen Chronik-Eintrag in 3 Sätzen nach Bauplan 1.</p>
+    <p class="where">Notiere auf: Chronik</p>
+  </div>
+  <div class="task">
+    <div class="task-head"><span class="num">1.2</span><a class="help" href="#h1-2">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Wie viele Raben sitzen in Krabats Traum auf der Stange? Was fällt dir an der Stange auf?</p>
+    <p class="lvl"><span class="star">★★</span>Krabat flüstert: «Der Meister hat mich etwas wählen lassen.» Was durfte Krabat wählen, und wofür hat er sich entschieden? Würdest du gleich wählen? (2 Sätze)</p>
+    <p class="where">Notiere auf: Spuren (★) oder Chronik (★★)</p>
+  </div>
+
+  <div class="reward">
+    <svg class="feather" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20 3c-6 0-12 4-13 11l-3 7 2 .8 2.4-5.4C15 16 19 10 20 3z"/></svg>
+    <div>
+      <p><b>Rabenfeder 1.</b> Mlynka: «Elf Raben und ein freier Platz. Merk dir das gut.»</p>
+      <p class="spark"><b>Funke (nur denken):</b> Krabat will mehr lernen als nur das Handwerk. Was möchtest du in deinem Beruf einmal können, das kaum jemand kann?</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== KAPITEL 2 ===================== -->
+<section>
+  <h2 id="k2">Quest 2: Elf und einer</h2>
+  <span class="time">ca. 7 Min.</span>
+  <div class="say"><b>Mlynka:</b> «Zwölf Schlafplätze unter dem Dach. Lern die Leute kennen, mit denen Krabat jetzt lebt. Einer davon wird für ihn besonders wichtig.»</div>
+  <p><span class="step">Entdecken</span>Lies nur den Titel «Elf und einer». Wer könnten die Elf sein, wer der eine? Vergleiche deine Vermutung danach mit dem Kapitel.</p>
+
+  <div class="plan">
+    <h3>Bauplan 2: Der Figurensteckbrief mit Beleg</h3>
+    <p>Eine <b>Figur</b> ist eine Person in einer Geschichte. Behaupten ist leicht, beweisen ist Handwerk. Darum gehört zu jedem Merkmal ein Beleg.</p>
+    <ol>
+      <li><b>Name und Rolle</b> der Figur, z. B. Altgeselle (der älteste und erfahrenste Geselle).</li>
+      <li><b>Ein Merkmal</b> als Adjektiv, z. B. mutig, streng, hilfsbereit.</li>
+      <li><b>Ein Beleg:</b> Was tut oder sagt die Figur? Ein <b>Textbeleg</b> ist die Stelle im Buch, die dein Merkmal beweist. Notiere die Seitenzahl.</li>
+      <li><b>Zusammenfassen:</b> «… ist …, denn …»</li>
+    </ol>
+    <p class="example"><b>Beispiel «Rotkäppchen»:</b> Der Wolf, Gegenspieler. Merkmal: listig. Beleg: Er fragt Rotkäppchen freundlich aus, wo die Grossmutter wohnt. «Der Wolf ist listig, denn er tut freundlich, um Rotkäppchens Ziel zu erfahren.»</p>
+  </div>
+
+  <div class="task">
+    <div class="task-head"><span class="num">2.1</span><a class="help" href="#h2-1">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Erkläre den Titel: Wer sind die «elf», wer ist der «eine»?</p>
+    <p class="lvl"><span class="star">★★</span>Erkläre den Titel. Notiere ausserdem: Was liegt für Krabat schon bereit, als er ankommt? Warum ist das seltsam?</p>
+    <p class="where">Notiere auf: Spuren</p>
+  </div>
+  <div class="task">
+    <div class="task-head"><span class="num">2.2</span><a class="help" href="#h2-2">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Krabats erste Aufgabe ist die Mehlkammer. Was passiert dabei?</p>
+    <p class="lvl"><span class="star">★★</span>Schreib einen Figurensteckbrief zu Tonda nach Bauplan 2.</p>
+    <p class="where">Notiere auf: Figuren</p>
+  </div>
+
+  <div class="reward">
+    <svg class="feather" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20 3c-6 0-12 4-13 11l-3 7 2 .8 2.4-5.4C15 16 19 10 20 3z"/></svg>
+    <div>
+      <p><b>Rabenfeder 2.</b> Mlynka: «Den Altgesellen solltest du im Auge behalten.»</p>
+      <p class="spark"><b>Funke (nur denken):</b> Tonda kann etwas, das Krabat noch nicht kann, und er teilt es. Wer ist für dich so ein Tonda?</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== KAPITEL 3 ===================== -->
+<section>
+  <h2 id="k3">Quest 3: Kein Honiglecken</h2>
+  <span class="time">ca. 7 Min.</span>
+  <p class="word"><b>Wortlupe:</b> «Kein Honiglecken» heisst: Es ist hart und alles andere als angenehm.</p>
+  <div class="say"><b>Krabat flüstert:</b> «Mir tut jeder Knochen weh. Die anderen arbeiten, als wäre es nichts. Wie machen die das?»</div>
+  <p><span class="step">Entdecken</span>Pack drei dicke Bücher in einen Rucksack. Trag ihn zweimal quer durch die Wohnung, ohne zu rennen. Notiere ein Wort: Wie fühlt sich das an? Krabat arbeitet so vom Morgen bis zum Abend.</p>
+
+  <div class="plan">
+    <h3>Bauplan 3: Spuren lesen</h3>
+    <p>Gute Geschichten verstecken Hinweise. Eine <b>Vorausdeutung</b> ist ein Hinweis im Text, der andeutet, was später passieren könnte.</p>
+    <ol>
+      <li><b>Spur finden:</b> Was ist seltsam, unheimlich oder nicht erklärt?</li>
+      <li><b>Frage stellen:</b> Was könnte das bedeuten?</li>
+      <li><b>Vermutung notieren:</b> «Ich vermute, dass …, weil …»</li>
+      <li><b>Später prüfen:</b> Bestätigt sich die Vermutung, mal einen grünen Haken. Sonst einen roten Strich. Beides ist gute Detektivarbeit.</li>
+    </ol>
+    <p class="example"><b>Beispiel «Rotkäppchen»:</b> Spur: Der Wolf will genau wissen, wo die Grossmutter wohnt. Vermutung: «Ich vermute, dass der Wolf zur Grossmutter geht, weil er sonst nicht so genau fragen würde.» Prüfen: grüner Haken.</p>
+  </div>
+
+  <div class="task">
+    <div class="task-head"><span class="num">3.1</span><a class="help" href="#h3-1">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Wie geht es Krabat bei der Arbeit, und wie wirken die anderen Gesellen?</p>
+    <p class="lvl"><span class="star">★★</span>Warum schaffen die anderen die Arbeit wohl leichter? Schreib eine Vermutung nach Bauplan 3.</p>
+    <p class="where">Notiere auf: Spuren</p>
+  </div>
+  <div class="task">
+    <div class="task-head"><span class="num">3.2</span><a class="help" href="#h3-2">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Wie hilft Tonda Krabat heimlich?</p>
+    <p class="lvl"><span class="star">★★</span>Krabat soll niemandem von Tondas Hilfe erzählen. Warum wohl? Notiere eine Vermutung. Ergänze danach Tondas Steckbrief mit einem zweiten Beleg.</p>
+    <p class="where">Notiere auf: Spuren und Figuren</p>
+  </div>
+
+  <div class="reward">
+    <svg class="feather" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20 3c-6 0-12 4-13 11l-3 7 2 .8 2.4-5.4C15 16 19 10 20 3z"/></svg>
+    <div>
+      <p><b>Rabenfeder 3.</b> Mlynka: «Heimliche Hilfe. Das gibt es hier selten.»</p>
+      <p class="spark"><b>Funke (nur denken):</b> Jede Lehre ist am Anfang anstrengend. Welche Anstrengung würdest du für deinen Traumberuf in Kauf nehmen?</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== KAPITEL 4 ===================== -->
+<section>
+  <h2 id="k4">Quest 4: Wege im Traum</h2>
+  <span class="time">ca. 7 Min.</span>
+  <div class="say"><b>Mlynka:</b> «Der Junge schläft unruhig. In dieser Mühle sind Träume nie nur Träume.»</div>
+  <p><span class="step">Entdecken</span>Zeichne in einer Minute einen Weg, der immer wieder an seinen Anfang zurückführt. Halte die Zeichnung bereit, du brauchst sie bei 4.2.</p>
+  <p class="soft">Erinnerung: Bauplan 2 (Steckbrief) und Bauplan 3 (Spuren) helfen dir heute.</p>
+
+  <div class="task">
+    <div class="task-head"><span class="num">4.1</span><a class="help" href="#h4-1">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>An wen und woran denkt Krabat am Anfang des Kapitels?</p>
+    <p class="lvl"><span class="star">★★</span>Was erfährst du über Krabats Leben vor der Mühle? Leg einen Steckbrief für Krabat an: ein Merkmal mit Beleg.</p>
+    <p class="where">Notiere auf: Figuren</p>
+  </div>
+  <div class="task">
+    <div class="task-head"><span class="num">4.2</span><a class="help" href="#h4-2">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Was passiert in Krabats Traum, egal welchen Weg er nimmt?</p>
+    <p class="lvl"><span class="star">★★</span>Was hat deine Zeichnung mit dem Traum zu tun? Notiere die Spur und eine Vermutung.</p>
+    <p class="where">Notiere auf: Spuren</p>
+  </div>
+
+  <div class="reward">
+    <svg class="feather" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20 3c-6 0-12 4-13 11l-3 7 2 .8 2.4-5.4C15 16 19 10 20 3z"/></svg>
+    <div>
+      <p><b>Rabenfeder 4.</b> Mlynka: «Alle Wege führen zur Mühle. Das sagt man hier nicht laut.»</p>
+      <p class="spark"><b>Funke (nur denken):</b> Krabat ist früher einmal weggelaufen. Wohin möchtest du später einmal aufbrechen?</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== KAPITEL 5 ===================== -->
+<section>
+  <h2 id="k5">Quest 5: Der mit der Hahnenfeder</h2>
+  <span class="time">ca. 7 Min.</span>
+  <p class="word"><b>Wortlupe:</b> Ein <b>Mahlgang</b> ist ein Paar Mühlsteine, das Getreide zu Mehl mahlt.</p>
+  <div class="say"><b>Krabat flüstert:</b> «Heute Nacht stand ein Wagen vor der Mühle. Hab ich das geträumt? Sag du es mir.»</div>
+  <p><span class="step">Entdecken</span>Was findest du unheimlicher: was Krabat im siebten Gang findet, oder dass niemand darüber spricht? Entscheide dich und nenne einen Grund.</p>
+  <p class="soft">Erinnerung: Bauplan 3 (Spuren lesen).</p>
+
+  <div class="task">
+    <div class="task-head"><span class="num">5.1</span><a class="help" href="#h5-1">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Wie viele Mahlgänge hat die Mühle, und was ist mit dem letzten?</p>
+    <p class="lvl"><span class="star">★★</span>Was entdeckt Krabat in diesem Mahlgang, und wie reagiert Tonda?</p>
+  </div>
+  <div class="task">
+    <div class="task-head"><span class="num">5.2</span><a class="help" href="#h5-2">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Beschreibe den Fremden mit dem Wagen. Nenne zwei Merkmale.</p>
+    <p class="lvl"><span class="star">★★</span>Notiere zwei Spuren aus diesem Kapitel mit je einer Vermutung.</p>
+    <p class="where">Notiere auf: Spuren</p>
+  </div>
+
+  <div class="reward">
+    <svg class="feather" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20 3c-6 0-12 4-13 11l-3 7 2 .8 2.4-5.4C15 16 19 10 20 3z"/></svg>
+    <div>
+      <p><b>Rabenfeder 5.</b> Mlynka: «Wenn der mit der Feder kommt, bleib ich in meinem Loch.»</p>
+      <p class="spark"><b>Funke (nur denken):</b> Krabat soll nicht herumschnüffeln. In welchen Berufen ist Neugier ausdrücklich erwünscht?</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== KAPITEL 6 ===================== -->
+<section>
+  <h2 id="k6">Quest 6: Husch auf die Stange</h2>
+  <span class="time">ca. 7 Min.</span>
+  <p class="word"><b>Wortlupe:</b> Die <b>Probezeit</b> ist die erste Zeit einer Lehre. Beide Seiten prüfen, ob es passt. In der Schweiz dauert sie heute meist ein bis drei Monate.</p>
+  <div class="say"><b>Mlynka:</b> «Krabats Probezeit ist vorbei. Jetzt beginnt der andere Unterricht. Halt deine Federn fest.»</div>
+  <p><span class="step">Entdecken</span>Stell dir vor, du könntest dich in einen Raben verwandeln. Was wäre das Beste daran, was das Unheimlichste? Nur denken.</p>
+
+  <div class="task">
+    <div class="task-head"><span class="num">6.1</span><a class="help" href="#h6-1">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Wie heisst der Unterricht, an dem Krabat jetzt teilnimmt? In welcher Gestalt sitzen die Schüler dort?</p>
+    <p class="lvl"><span class="star">★★</span>Erkläre den Titel «Husch auf die Stange». Welche Spur aus Kapitel 1 bestätigt sich hier? Mal einen grünen Haken auf deiner Spurenseite.</p>
+  </div>
+  <div class="task">
+    <div class="task-head"><span class="num">6.2</span><a class="help" href="#h6-2">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Wie kommt Krabat mit dem Lernen in diesem Unterricht zurecht?</p>
+    <p class="lvl"><span class="star">★★</span>Leg einen Steckbrief für den Meister an: ein Merkmal mit Beleg aus Kapitel 1 bis 6.</p>
+    <p class="where">Notiere auf: Figuren</p>
+  </div>
+
+  <div class="reward">
+    <svg class="feather" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20 3c-6 0-12 4-13 11l-3 7 2 .8 2.4-5.4C15 16 19 10 20 3z"/></svg>
+    <div>
+      <p><b>Rabenfeder 6.</b> Mlynka: «Jetzt sind es zwölf Raben auf der Stange.»</p>
+      <p class="spark"><b>Funke (nur denken):</b> Krabat lernt eine geheime Kunst. Welches Können in deinem Traumberuf wirkt für andere fast wie Zauberei?</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== KAPITEL 7 ===================== -->
+<section>
+  <h2 id="k7">Quest 7: Das Mal der geheimen Bruderschaft</h2>
+  <span class="time">ca. 7 Min.</span>
+  <p class="word"><b>Wortlupe:</b> Eine <b>Bruderschaft</b> ist eine Gemeinschaft, die ein Geheimnis oder ein Versprechen verbindet.</p>
+  <div class="say"><b>Krabat flüstert:</b> «Osternacht. Draussen im Moor, mit Tonda am Feuer. Bleib in der Nähe, ja?»</div>
+  <p><span class="step">Entdecken</span>Ein <b>Drudenfuss</b> ist ein fünfzackiger Stern, den man in einem Zug zeichnet. Zeichne ihn, ohne den Stift abzusetzen. Wie viele Versuche brauchst du?</p>
+
+  <div class="task">
+    <div class="task-head"><span class="num">7.1</span><a class="help" href="#h7-1">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Wovon erzählt Tonda am Feuer, und wovor warnt er Krabat?</p>
+    <p class="lvl"><span class="star">★★</span>Warum könnte diese Warnung wichtig werden? Notiere sie als Spur mit Vermutung.</p>
+    <p class="where">Notiere auf: Spuren</p>
+  </div>
+  <div class="task">
+    <div class="task-head"><span class="num">7.2</span><a class="help" href="#h7-2">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Wessen Stimme hört Krabat aus dem Dorf? Erkläre das Wort «Kantorka».</p>
+    <p class="lvl"><span class="star">★★</span>Was ist das «Mal» im Titel, und was bedeutet es für die Gesellen?</p>
+  </div>
+
+  <div class="reward">
+    <svg class="feather" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20 3c-6 0-12 4-13 11l-3 7 2 .8 2.4-5.4C15 16 19 10 20 3z"/></svg>
+    <div>
+      <p><b>Rabenfeder 7.</b> Mlynka: «Eine Stimme aus dem Dorf. Die vergisst er nicht so schnell.»</p>
+      <p class="spark"><b>Funke (nur denken):</b> Die Gesellen tragen ein Zeichen, das sie verbindet. Welche Zeichen tragen Berufsleute heute?</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== KAPITEL 8 ===================== -->
+<section>
+  <h2 id="k8">Quest 8: Gedenke, dass ich der Meister bin</h2>
+  <span class="time">ca. 7 Min.</span>
+  <div class="say"><b>Mlynka:</b> «Nach Ostern kommt der Schwur. Hör genau hin, wer hier wem gehorchen muss.»</div>
+  <p><span class="step">Entdecken</span>Sprich den Kapiteltitel dreimal laut aus: freundlich, streng und drohend. Welche Stimme passt zum Meister? Warum?</p>
+
+  <div class="task">
+    <div class="task-head"><span class="num">8.1</span><a class="help" href="#h8-1">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Was geschieht mit den Gesellen, als sie nach der Osternacht in die Mühle zurückkehren?</p>
+    <p class="lvl"><span class="star">★★</span>Was wird für Krabat danach leichter, was schwerer? Erkläre diesen Widerspruch in 2 Sätzen.</p>
+  </div>
+  <div class="task">
+    <div class="task-head"><span class="num">8.2</span><a class="help" href="#h8-2">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Was geschieht bei Neumond in der Mühle?</p>
+    <p class="lvl"><span class="star">★★</span>Welche Spur aus Kapitel 5 wird hier bestätigt? Mal einen grünen Haken und erkläre in einem Satz.</p>
+    <p class="where">Notiere auf: Spuren</p>
+  </div>
+
+  <div class="reward">
+    <svg class="feather" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20 3c-6 0-12 4-13 11l-3 7 2 .8 2.4-5.4C15 16 19 10 20 3z"/></svg>
+    <div>
+      <p><b>Rabenfeder 8.</b> Mlynka: «Ein Schwur ist leicht gesagt und schwer zurückgenommen.»</p>
+      <p class="spark"><b>Funke (nur denken):</b> Krabat schwört Gehorsam. Was darf ein Lehrbetrieb heute von dir verlangen, und was nicht?</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== KAPITEL 9 ===================== -->
+<section>
+  <h2 id="k9">Quest 9: Ochsenblaschke aus Kamenz</h2>
+  <span class="time">ca. 7 Min.</span>
+  <div class="say"><b>Krabat flüstert:</b> «Markttag in Wittichenau! Der Meister will Geld sehen. Und Andrusch soll ein Ochse werden?»</div>
+  <p><span class="step">Entdecken</span>Nimm einen Gegenstand aus der Küche, z. B. einen Kochlöffel. Preise ihn 30 Sekunden laut an wie ein Händler auf dem Markt. Welche Tricks hast du benutzt?</p>
+
+  <div class="task">
+    <div class="task-head"><span class="num">9.1</span><a class="help" href="#h9-1">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Wer geht auf den Markt, und wer spielt welche Rolle?</p>
+    <p class="lvl"><span class="star">★★</span>Schreib einen Chronik-Eintrag zu diesem Kapitel nach Bauplan 1.</p>
+    <p class="where">Notiere auf: Chronik</p>
+  </div>
+  <div class="task">
+    <div class="task-head"><span class="num">9.2</span><a class="help" href="#h9-2">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Warum muss Tonda den Strick behalten?</p>
+    <p class="lvl"><span class="star">★★</span>Wie entkommt Andrusch am Ende? Ist der Trick ehrlich? Begründe deine Meinung in 2 Sätzen.</p>
+  </div>
+
+  <div class="reward">
+    <svg class="feather" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20 3c-6 0-12 4-13 11l-3 7 2 .8 2.4-5.4C15 16 19 10 20 3z"/></svg>
+    <div>
+      <p><b>Rabenfeder 9.</b> Mlynka: «Ein Ochse, der davonfliegt. Das erzählt man sich bestimmt noch lange.»</p>
+      <p class="spark"><b>Funke (nur denken):</b> Tonda verhandelt geschickt. Macht es dir Spass, andere zu überzeugen? Welche Berufe brauchen das?</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== KAPITEL 10 ===================== -->
+<section>
+  <h2 id="k10">Quest 10: Feldmusik</h2>
+  <span class="time">ca. 7 Min.</span>
+  <p class="word"><b>Wortlupe:</b> <b>Werber</b> suchen junge Männer für das Heer. Der <b>Kurfürst</b> ist der Herrscher von Sachsen. <b>Feldmusik</b> ist Militärmusik mit Trommeln und Pfeifen. In der Schweiz heissen heute auch viele Musikvereine so.</p>
+  <div class="say"><b>Mlynka:</b> «Trommeln auf dem Weg! Leute des Kurfürsten. Die nehmen junge Burschen mit in den Krieg.»</div>
+  <p><span class="step">Entdecken</span>Was würdest du an Krabats Stelle tun, wenn Werber vor der Tür stehen? Nur denken.</p>
+
+  <div class="task">
+    <div class="task-head"><span class="num">10.1</span><a class="help" href="#h10-1">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Was wollen die Werber in der Mühle?</p>
+    <p class="lvl"><span class="star">★★</span>Wie wehren sich die Gesellen? Nenne zwei Streiche.</p>
+  </div>
+  <div class="task">
+    <div class="task-head"><span class="num">10.2</span><a class="help" href="#h10-2">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Wie kehren die Gesellen am Ende zur Mühle zurück?</p>
+    <p class="lvl"><span class="star">★★</span>Vergleiche mit Kapitel 9: Wofür nutzen die Gesellen die Zauberei dort, wofür hier? Was findest du besser? (2 Sätze)</p>
+  </div>
+
+  <div class="reward">
+    <svg class="feather" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20 3c-6 0-12 4-13 11l-3 7 2 .8 2.4-5.4C15 16 19 10 20 3z"/></svg>
+    <div>
+      <p><b>Rabenfeder 10.</b> Mlynka: «Zwölf Raben gegen ein paar Trommeln. Die Trommeln haben verloren.»</p>
+      <p class="spark"><b>Funke (nur denken):</b> Hier schützt die Zauberei die Gesellen. Welche Berufe schützen heute andere Menschen?</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== KAPITEL 11 ===================== -->
+<section>
+  <h2 id="k11">Quest 11: Das Andenken</h2>
+  <span class="time">ca. 7 Min.</span>
+  <p class="word"><b>Wortlupe:</b> <b>Torf</b> besteht aus alten Pflanzenresten aus dem Moor. Getrocknet wurde er früher zum Heizen verbrannt. Ein <b>Andenken</b> ist ein Gegenstand, der an jemanden erinnert.</p>
+  <div class="say"><b>Krabat flüstert:</b> «Torfstechen am Schwarzen Wasser. Tonda ist heute so still. Ist dir das auch aufgefallen?»</div>
+  <p><span class="step">Entdecken</span>Such dir zu Hause einen Gegenstand, den du als Andenken aufbewahrst. Warum ist er dir wichtig? Nur denken, dann zurücklegen.</p>
+
+  <div class="task">
+    <div class="task-head"><span class="num">11.1</span><a class="help" href="#h11-1">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Wer fährt zum Torfstechen, und was zaubert Staschko herbei?</p>
+    <p class="lvl"><span class="star">★★</span>Warum ist Staschkos Zauber eine Enttäuschung? Was sagt das über Zauberei aus?</p>
+  </div>
+  <div class="task">
+    <div class="task-head"><span class="num">11.2</span><a class="help" href="#h11-2">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Was schenkt Tonda Krabat, und was kann dieses Geschenk?</p>
+    <p class="lvl"><span class="star">★★</span>Erkläre den Kapiteltitel. Warum gibt Tonda sein Geschenk wohl gerade jetzt weg? Notiere Spur und Vermutung.</p>
+    <p class="where">Notiere auf: Spuren</p>
+  </div>
+
+  <div class="reward">
+    <svg class="feather" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20 3c-6 0-12 4-13 11l-3 7 2 .8 2.4-5.4C15 16 19 10 20 3z"/></svg>
+    <div>
+      <p><b>Rabenfeder 11.</b> Mlynka: «Gib gut acht auf die Klinge, Lehrling.»</p>
+      <p class="spark"><b>Funke (nur denken):</b> Tonda gibt etwas Wertvolles weiter. Welches Werkzeug möchtest du einmal so gut beherrschen, dass du es weitergeben kannst?</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== KAPITEL 12 ===================== -->
+<section>
+  <h2 id="k12">Quest 12: Ohne Pastor und Kreuz</h2>
+  <span class="time">ca. 7 Min.</span>
+  <p class="soft">Dieses Kapitel ist traurig. Wenn es dich beschäftigt, sprich mit deinen Eltern darüber.</p>
+  <div class="say"><b>Mlynka, leise:</b> «Es ist Winter geworden. Niemand lacht mehr in der Mühle. Schreib heute besonders genau.»</div>
+  <p><span class="step">Entdecken</span>Lies deine Spurenseite durch. Welche Spuren passen zu diesem Kapitel? Mal grüne Haken.</p>
+
+  <div class="task">
+    <div class="task-head"><span class="num">12.1</span><a class="help" href="#h12-1">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Wie ist die Stimmung in der Mühle im Winter, und was versucht Krabat dagegen?</p>
+    <p class="lvl"><span class="star">★★</span>Schreib einen Chronik-Eintrag zu diesem Kapitel nach Bauplan 1.</p>
+    <p class="where">Notiere auf: Chronik</p>
+  </div>
+  <div class="task">
+    <div class="task-head"><span class="num">12.2</span><a class="help" href="#h12-2">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Was bedeutet der Titel «Ohne Pastor und Kreuz»?</p>
+    <p class="lvl"><span class="star">★★</span>Krabat will beten, aber ihm fallen die Worte nicht ein. Was könnte das über Krabat und die Mühle aussagen? (2 Sätze)</p>
+  </div>
+
+  <div class="reward">
+    <svg class="feather" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20 3c-6 0-12 4-13 11l-3 7 2 .8 2.4-5.4C15 16 19 10 20 3z"/></svg>
+    <div>
+      <p><b>Rabenfeder 12.</b> Mlynka: «Zwölf Federn. Erinnere dich gut an Tonda. Bald klopft der Zunftbote.»</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== JAHRES-QUEST ===================== -->
+<section>
+  <h2 id="jahr">Jahres-Quest: Der Zunftbote</h2>
+  <span class="time">ca. 30 Min.</span>
+  <div class="say"><b>Der Zunftbote:</b> «Guten Tag, dreizehnter Lehrling. Ich prüfe jedes Jahr, was in den Mühlen der Gegend gelernt wird. Zeig mir dein Spurenbuch. Dann reden wir über dich.»</div>
+
+  <h3>Station 1 · Entdecken: Der Zeitstrahl <span class="soft">(8 Min.)</span></h3>
+  <p>Schreib die Buchstaben A bis L auf 12 Zettel. Leg die Zettel am Boden in eine lange Reihe, von der Tür weg. Ordne sie so, wie die Ereignisse im Buch passieren. Notiere die Reihenfolge danach im Heft.</p>
+  <div class="cards">
+    <div><b>A</b>Tonda schenkt Krabat sein Messer.</div>
+    <div><b>B</b>Krabat sieht nachts einen Wagen und einen Fremden mit Hahnenfeder.</div>
+    <div><b>C</b>Die Gesellen vertreiben die Werber des Kurfürsten mit Zauberei.</div>
+    <div><b>D</b>Krabat träumt von elf Raben auf einer Stange.</div>
+    <div><b>E</b>Tonda wird ohne Pastor begraben.</div>
+    <div><b>F</b>Krabat sitzt zum ersten Mal als Rabe in der Schwarzen Schule.</div>
+    <div><b>G</b>Tonda macht die Mehlkammer mit einem Zauberspruch sauber.</div>
+    <div><b>H</b>Andrusch wird als Ochse verkauft.</div>
+    <div><b>I</b>In der Osternacht hört Krabat die Kantorka singen.</div>
+    <div><b>J</b>Tonda hilft Krabat heimlich durch Handauflegen.</div>
+    <div><b>K</b>Krabat schwört dem Meister Gehorsam.</div>
+    <div><b>L</b>Krabat träumt, dass jeder Fluchtweg zur Mühle zurückführt.</div>
+  </div>
+
+  <div class="plan">
+    <h3>Bauplan 4: Die Jahres-Chronik <span class="soft">(2 Min.)</span></h3>
+    <p>Eine Jahres-Chronik fasst einen ganzen Teil des Buchs zusammen. Sie ist länger als ein Chronik-Eintrag, aber genauso knapp.</p>
+    <ol>
+      <li><b>Einleitungssatz:</b> Titel, Autor und worum es geht, in einem Satz.</li>
+      <li><b>Anfang:</b> Wie kommt die Hauptfigur in die Geschichte?</li>
+      <li><b>Mitte:</b> Nur die drei wichtigsten Erlebnisse.</li>
+      <li><b>Ende:</b> Wie endet der Teil?</li>
+      <li>5 bis 7 Sätze, Präsens, eigene Worte, keine wörtliche Rede.</li>
+    </ol>
+    <p class="example"><b>Beispiel «Rotkäppchen»:</b> Das Märchen «Rotkäppchen» der Brüder Grimm erzählt von einem Mädchen, das einem listigen Wolf vertraut. Rotkäppchen soll der kranken Grossmutter Kuchen und Wein bringen. Im Wald verrät es dem Wolf, wo die Grossmutter wohnt. Der Wolf frisst zuerst die Grossmutter und dann Rotkäppchen. Ein Jäger hört ihn schnarchen und rettet die beiden aus dem Bauch des Wolfs.</p>
+  </div>
+
+  <h3>Station 2 · Anwenden <span class="soft">(10 Min.)</span></h3>
+  <div class="task">
+    <div class="task-head"><span class="num">J1</span><a class="help" href="#hj1">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Schreib eine Jahres-Chronik in 5 Sätzen. Nutze dazu deinen Zeitstrahl.</p>
+    <p class="lvl"><span class="star">★★</span>Schreib eine Jahres-Chronik in 5 bis 7 Sätzen, ohne auf den Zeitstrahl zu schauen.</p>
+  </div>
+  <div class="task">
+    <div class="task-head"><span class="num">J2</span><a class="help" href="#hj2">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Nenne drei Dinge, die Tonda im ersten Jahr für Krabat tut.</p>
+    <p class="lvl"><span class="star">★★</span>Schreib einen Steckbrief zu Tonda über das ganze Jahr: zwei Merkmale mit je einem Beleg aus verschiedenen Kapiteln.</p>
+  </div>
+  <div class="task">
+    <div class="task-head"><span class="num">J3</span><a class="help" href="#hj3">Hilfe</a></div>
+    <p class="lvl"><span class="star">★</span>Lies deine Spurenseite. Welche Vermutungen haben sich bis Kapitel 12 bestätigt? Mal sie grün an.</p>
+    <p class="lvl"><span class="star">★★</span>Wähle zwei Spuren aus verschiedenen Kapiteln, die auf das Ende des Jahres hindeuten. Erkläre bei jeder, warum sie eine Vorausdeutung ist.</p>
+  </div>
+
+  <h3>Station 3 · Berufe-Spiegel <span class="soft">(5 Min., wird nicht bewertet)</span></h3>
+  <div class="say"><b>Der Zunftbote:</b> «Eine gute Lehre macht dich stärker, nicht kleiner. Lass uns das an der Mühle prüfen.»</div>
+  <ol>
+    <li>Was lernt Krabat in der Mühle? Mach zwei Spalten: <b>Handwerk</b> und <b>Zauberei</b>.</li>
+    <li>Was macht der Meister als Lehrmeister gut, was schlecht? Je ein Punkt.</li>
+    <li>Was macht Tonda als Altgeselle richtig? Was davon wünschst du dir in deiner Ausbildung?</li>
+    <li>Welcher «Zauber» steckt in deinem Wunschberuf? Was kann man dort, das andere staunen lässt?</li>
+    <li>Woran würdest du merken, dass ein Lehrbetrieb nicht gut für dich ist? Nenne zwei Warnzeichen.</li>
+  </ol>
+
+  <h3>Station 4 · Missions-Check <span class="soft">(6 Min., ohne Hilfe)</span></h3>
+  <p>Jetzt bist du allein. Keine Tipps, keine Maus, kein Krabat.</p>
+  <div class="task">
+    <p><b>M1</b> Bring in die richtige Reihenfolge: Osternacht · Mehlkammer · Ochsenmarkt · Schwarze Schule.</p>
+    <p><b>M2</b> Wo liegt die Mühle, und wer kommt bei Neumond dorthin?</p>
+    <p><b>M3</b> Nenne ein Merkmal des Meisters mit Beleg.</p>
+    <p><b>M4</b> Wie verändert sich Krabat im ersten Jahr? Nenne ein Merkmal am Anfang und eines am Ende, je mit Beleg.</p>
+    <p><b>M5</b> Erkläre, was eine Vorausdeutung ist, und nenne ein Beispiel aus dem ersten Jahr.</p>
+    <p><b>M6</b> Warum heisst Kapitel 11 «Das Andenken»?</p>
+  </div>
+
+  <h3>Station 5 · Wie gut kannst du es?</h3>
+  <p>Kontrolliere den Missions-Check mit den Lösungen. Dann mal in deinem Heft einen Punkt pro Ziel.</p>
+  <table>
+    <tr><th>Lernziel</th><th>Aufgaben</th><th>Deine Farbe</th></tr>
+    <tr><td>Ich kann die Handlung wiedergeben.</td><td>M1, M2, J1</td><td><span class="dot g"></span><span class="dot y"></span><span class="dot r"></span></td></tr>
+    <tr><td>Ich kann Figuren mit Belegen beschreiben.</td><td>M3, M4, J2</td><td><span class="dot g"></span><span class="dot y"></span><span class="dot r"></span></td></tr>
+    <tr><td>Ich kann Spuren und Vorausdeutungen erkennen.</td><td>M5, M6, J3</td><td><span class="dot g"></span><span class="dot y"></span><span class="dot r"></span></td></tr>
+  </table>
+  <p class="soft"><span class="dot g"></span>kann ich <span class="dot y"></span>fast <span class="dot r"></span>brauche Übung</p>
+
+  <div class="reward">
+    <svg class="feather" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path fill="currentColor" d="M12 6l1.8 3.8 4.2.5-3.1 2.9.8 4.1L12 15.3 8.3 17.3l.8-4.1L6 10.3l4.2-.5z"/></svg>
+    <div>
+      <p><b>Das Siegel des ersten Jahres.</b> Der Zunftbote drückt sein Siegel in dein Spurenbuch. «Du hast genau hingeschaut. Das ist der Anfang jedes guten Handwerks.»</p>
+      <p class="spark">Mlynka flüstert: «Das erste Jahr ist vorbei. Aber die Mühle dreht sich weiter.»</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== HILFEN ===================== -->
+<section>
+  <h2 id="hilfen">Hilfen</h2>
+  <p class="soft">Lies zuerst nur Tipp 1. Probier es nochmals. Erst dann Tipp 2.</p>
+
+  <details id="h1-1"><summary>Hilfe 1.1</summary><div>
+    <p><b>Tipp 1:</b> Lies die ersten und die letzten zwei Seiten des Kapitels nochmals.</p>
+    <p><b>Tipp 2:</b> Wer: ein 14-jähriger Junge. Wo: erst in der Gegend um Hoyerswerda, dann bei einem Dorf namens Schwarzkollm. Was: Träume und eine Entscheidung.</p>
+  </div></details>
+  <details id="h1-2"><summary>Hilfe 1.2</summary><div>
+    <p><b>Tipp 1:</b> ★ Die Antwort steht im Traum, ganz am Anfang. ★★ Lies das Gespräch zwischen Krabat und dem Meister nochmals.</p>
+    <p><b>Tipp 2:</b> ★ Zähl die Raben, dann schau ans linke Ende der Stange. ★★ Der Meister fragt: nur das Müllern oder …?</p>
+  </div></details>
+  <details id="h2-1"><summary>Hilfe 2.1</summary><div>
+    <p><b>Tipp 1:</b> Zähl alle Burschen in der Mühle, Krabat mitgezählt.</p>
+    <p><b>Tipp 2:</b> Elf sind schon da, einer kommt neu dazu. Und schau, was auf Krabats Schlafplatz liegt.</p>
+  </div></details>
+  <details id="h2-2"><summary>Hilfe 2.2</summary><div>
+    <p><b>Tipp 1:</b> Lies die Stelle mit dem Besen und dem Mehlstaub nochmals.</p>
+    <p><b>Tipp 2:</b> Krabat schafft es allein nicht. Wer kommt ihm zu Hilfe, und was macht er mit ein paar Worten?</p>
+  </div></details>
+  <details id="h3-1"><summary>Hilfe 3.1</summary><div>
+    <p><b>Tipp 1:</b> Vergleiche, wie müde Krabat ist und wie müde die anderen sind.</p>
+    <p><b>Tipp 2:</b> Krabat rackert sich ab, die anderen nicht. Was können sie, das er noch nicht kann?</p>
+  </div></details>
+  <details id="h3-2"><summary>Hilfe 3.2</summary><div>
+    <p><b>Tipp 1:</b> Achte auf eine Stelle, an der Tonda Krabat berührt.</p>
+    <p><b>Tipp 2:</b> Tonda legt ihm die Hand auf. Und wer in der Mühle soll das wohl nicht erfahren?</p>
+  </div></details>
+  <details id="h4-1"><summary>Hilfe 4.1</summary><div>
+    <p><b>Tipp 1:</b> Krabat erinnert sich an seine Familie und an einen Ort, an dem er früher gelebt hat.</p>
+    <p><b>Tipp 2:</b> Denk an seine Eltern und an den Pastor. Was hat Krabat beim Pastor getan?</p>
+  </div></details>
+  <details id="h4-2"><summary>Hilfe 4.2</summary><div>
+    <p><b>Tipp 1:</b> Wohin führt jeder Weg im Traum?</p>
+    <p><b>Tipp 2:</b> Er kommt immer am selben Ort an. Was würde das für eine Flucht bedeuten?</p>
+  </div></details>
+  <details id="h5-1"><summary>Hilfe 5.1</summary><div>
+    <p><b>Tipp 1:</b> Zähl die Mahlgänge. Wie nennen die Gesellen den letzten?</p>
+    <p><b>Tipp 2:</b> Der siebte heisst «Toter Gang». Was liegt dort statt Mehl? Wer steht plötzlich hinter Krabat?</p>
+  </div></details>
+  <details id="h5-2"><summary>Hilfe 5.2</summary><div>
+    <p><b>Tipp 1:</b> Achte auf den Hut des Kutschers und auf den Wagen.</p>
+    <p><b>Tipp 2:</b> Seltsam sind: Knochen im Gang, ein unheimliches Mahlgeräusch, müde Gesellen am Morgen, ein Traum von Feuer.</p>
+  </div></details>
+  <details id="h6-1"><summary>Hilfe 6.1</summary><div>
+    <p><b>Tipp 1:</b> Die Schule hat eine Farbe im Namen.</p>
+    <p><b>Tipp 2:</b> Die Schüler sitzen als Raben auf einer Stange. Wie viele Raben waren es in Kapitel 1, und was war frei?</p>
+  </div></details>
+  <details id="h6-2"><summary>Hilfe 6.2</summary><div>
+    <p><b>Tipp 1:</b> ★ Lernt Krabat die Zaubersprüche leicht oder schwer? ★★ Was hat der Meister bisher getan?</p>
+    <p><b>Tipp 2:</b> ★★ Denk an Kapitel 3 (wie hart Krabat arbeiten muss) und an Kapitel 6 (die Verwandlung).</p>
+  </div></details>
+  <details id="h7-1"><summary>Hilfe 7.1</summary><div>
+    <p><b>Tipp 1:</b> Tonda spricht über einen Menschen, den er verloren hat.</p>
+    <p><b>Tipp 2:</b> Er erzählt von seiner Freundin. Und es geht um einen Namen, den man in der Mühle nicht sagen soll.</p>
+  </div></details>
+  <details id="h7-2"><summary>Hilfe 7.2</summary><div>
+    <p><b>Tipp 1:</b> Achte auf den Gesang der Mädchen aus dem Dorf.</p>
+    <p><b>Tipp 2:</b> Eine Stimme singt vor. Für das Mal: Was zeichnen sich die Gesellen im Morgengrauen auf die Stirn?</p>
+  </div></details>
+  <details id="h8-1"><summary>Hilfe 8.1</summary><div>
+    <p><b>Tipp 1:</b> Es gibt einen Schlag und ein Versprechen.</p>
+    <p><b>Tipp 2:</b> Danach wird die Arbeit leichter. Aber wie fühlt sich Krabat beim Gedanken an seinen Schwur?</p>
+  </div></details>
+  <details id="h8-2"><summary>Hilfe 8.2</summary><div>
+    <p><b>Tipp 1:</b> Wer kommt bei Neumond, und womit?</p>
+    <p><b>Tipp 2:</b> Denk an den Mann mit der Hahnenfeder und an die müden Gesellen aus Kapitel 5.</p>
+  </div></details>
+  <details id="h9-1"><summary>Hilfe 9.1</summary><div>
+    <p><b>Tipp 1:</b> Drei Burschen gehen auf den Markt.</p>
+    <p><b>Tipp 2:</b> Tonda, Andrusch und Krabat. Wer wird verkauft, wer spielt den Bauern?</p>
+  </div></details>
+  <details id="h9-2"><summary>Hilfe 9.2</summary><div>
+    <p><b>Tipp 1:</b> Achte darauf, was mit dem Strick nach dem Verkauf passieren muss.</p>
+    <p><b>Tipp 2:</b> Ohne Strick keine Rückverwandlung. ★★ Andrusch verwandelt sich ein zweites Mal, in ein Tier, das fliegen kann.</p>
+  </div></details>
+  <details id="h10-1"><summary>Hilfe 10.1</summary><div>
+    <p><b>Tipp 1:</b> Was suchen Werber immer?</p>
+    <p><b>Tipp 2:</b> Junge Männer für den Krieg gegen Schweden. ★★ Achte auf das Essen und die Betten der Werber.</p>
+  </div></details>
+  <details id="h10-2"><summary>Hilfe 10.2</summary><div>
+    <p><b>Tipp 1:</b> In welcher Gestalt sind die Gesellen am schnellsten?</p>
+    <p><b>Tipp 2:</b> ★★ Kapitel 9: Geld für den Meister. Kapitel 10: Schutz vor dem Krieg.</p>
+  </div></details>
+  <details id="h11-1"><summary>Hilfe 11.1</summary><div>
+    <p><b>Tipp 1:</b> Vier Burschen fahren hinaus. Was suchen sie im Wald neben der Arbeit?</p>
+    <p><b>Tipp 2:</b> Krabat, Tonda, Juro und Staschko suchen Pilze. Was passiert mit den gezauberten Pilzen?</p>
+  </div></details>
+  <details id="h11-2"><summary>Hilfe 11.2</summary><div>
+    <p><b>Tipp 1:</b> Achte auf die Klinge des Geschenks.</p>
+    <p><b>Tipp 2:</b> Wird die Klinge schwarz, droht Gefahr. Wer gibt etwas zum Andenken weg, und wann tut man das?</p>
+  </div></details>
+  <details id="h12-1"><summary>Hilfe 12.1</summary><div>
+    <p><b>Tipp 1:</b> Achte auf die Gefühle der Gesellen im Winter.</p>
+    <p><b>Tipp 2:</b> Angst und Misstrauen. ★★ Was hört Krabat in der Nacht, und was findet er am Morgen?</p>
+  </div></details>
+  <details id="h12-2"><summary>Hilfe 12.2</summary><div>
+    <p><b>Tipp 1:</b> Ein Pastor ist ein Pfarrer. Was fehlt bei Tondas Begräbnis?</p>
+    <p><b>Tipp 2:</b> ★★ Krabat lernt in der Mühle die Schwarze Kunst. Was hat er dafür vielleicht verloren?</p>
+  </div></details>
+  <details id="hj1"><summary>Hilfe J1</summary><div>
+    <p><b>Tipp 1:</b> Nimm deinen Zeitstrahl und deine Chronik-Einträge aus Kapitel 1, 9 und 12.</p>
+    <p><b>Tipp 2:</b> Anfang: Karte D. Mitte: Karten F, I und K. Ende: Karte E.</p>
+  </div></details>
+  <details id="hj2"><summary>Hilfe J2</summary><div>
+    <p><b>Tipp 1:</b> Blättere durch deine Figurenseite.</p>
+    <p><b>Tipp 2:</b> Schau in Kapitel 2, 3, 7 und 11 nach.</p>
+  </div></details>
+  <details id="hj3"><summary>Hilfe J3</summary><div>
+    <p><b>Tipp 1:</b> Lies deine Spurenseite von oben nach unten.</p>
+    <p><b>Tipp 2:</b> Schau besonders auf Kapitel 4 (Traum), 7 (Warnung), 11 (Messer) und 12 (Stimmung).</p>
+  </div></details>
+</section>
+
+<!-- ===================== LÖSUNGEN ===================== -->
+<section>
+  <h2 id="loesungen">Lösungen</h2>
+  <div class="stop">
+    <strong>STOPP</strong>
+    <p>Erst anschauen, wenn du fertig bist.</p>
+    <p class="soft">Deine Antworten dürfen anders formuliert sein. Wichtig ist, dass sie inhaltlich stimmen.</p>
+  </div>
+
+  <details><summary>Lösungen Quest 1</summary><div>
+    <p><b>1.1 ★</b> Wer: Krabat, ein 14-jähriger Waisenjunge. Wo: erst bettelnd in der Gegend um Hoyerswerda, dann in der Mühle im Koselbruch bei Schwarzkollm. Was: Er träumt mehrmals von Raben und einer Stimme, die ihn zur Mühle ruft, und wird dort Lehrjunge. Warum: Der Traum lässt ihn nicht los.</p>
+    <p><b>1.1 ★★</b> Beispiel: Der 14-jährige Waisenjunge Krabat zieht als Dreikönig verkleidet mit zwei Gefährten bettelnd durch die Gegend um Hoyerswerda. Mehrmals träumt er von elf Raben und einer Stimme, die ihn zur Mühle im Koselbruch ruft. Er folgt dem Ruf, und der Meister nimmt ihn als Lehrjungen auf.</p>
+    <p><b>1.2 ★</b> Elf Raben. Ein Platz auf der Stange ist noch frei.</p>
+    <p><b>1.2 ★★</b> Krabat durfte wählen, ob er nur das Müllern lernen will oder auch alles andere. Er wählt auch das andere. Deine Meinung zählt, wenn du sie begründest.</p>
+  </div></details>
+
+  <details><summary>Lösungen Quest 2</summary><div>
+    <p><b>2.1 ★</b> Die «elf» sind die Müllerburschen, die schon in der Mühle leben. Der «eine» ist Krabat, der neu dazukommt.</p>
+    <p><b>2.1 ★★</b> Wie ★. Dazu: Ein Schlafplatz und passende Kleider liegen schon für Krabat bereit. Das ist seltsam, als hätte man ihn erwartet.</p>
+    <p><b>2.2 ★</b> Krabat soll die Mehlkammer ausfegen, schafft es aber nicht. Tonda macht die Kammer mit einem Zauberspruch in einem Augenblick sauber.</p>
+    <p><b>2.2 ★★</b> Beispiel: Tonda, Altgeselle. Merkmal: hilfsbereit. Beleg: Er macht die Mehlkammer für Krabat mit einem Zauberspruch sauber. «Tonda ist hilfsbereit, denn er hilft Krabat bei seiner ersten Aufgabe.»</p>
+  </div></details>
+
+  <details><summary>Lösungen Quest 3</summary><div>
+    <p><b>3.1 ★</b> Krabat arbeitet bis zur Erschöpfung. Die anderen Gesellen halten scheinbar mühelos durch.</p>
+    <p><b>3.1 ★★</b> Beispiel: «Ich vermute, dass die anderen Gesellen sich mit Zauberei helfen, weil sie trotz harter Arbeit nicht müde werden.»</p>
+    <p><b>3.2 ★</b> Tonda legt Krabat heimlich die Hand auf und gibt ihm so neue Kraft.</p>
+    <p><b>3.2 ★★</b> Beispiel: «Ich vermute, dass der Meister diese Hilfe verbietet, weil Tonda sie so geheim hält.» Zweiter Beleg für Tondas Steckbrief: Er hilft Krabat heimlich durch Handauflegen.</p>
+  </div></details>
+
+  <details><summary>Lösungen Quest 4</summary><div>
+    <p><b>4.1 ★</b> Krabat denkt an seine verstorbenen Eltern und an die Zeit beim Pastor.</p>
+    <p><b>4.1 ★★</b> Krabat ist Waise und ist vom Pastor weggelaufen. Beispiel: «Krabat ist freiheitsliebend, denn er ist früher beim Pastor davongelaufen.»</p>
+    <p><b>4.2 ★</b> Egal, welchen Weg er im Traum nimmt, er landet immer wieder bei der Mühle.</p>
+    <p><b>4.2 ★★</b> Die Zeichnung führt wie der Traum immer zum Anfang zurück. Beispiel: «Ich vermute, dass man aus der Mühle nicht fliehen kann, weil jeder Weg im Traum zurückführt.»</p>
+  </div></details>
+
+  <details><summary>Lösungen Quest 5</summary><div>
+    <p><b>5.1 ★</b> Sieben Mahlgänge. Der siebte wird angeblich nie benutzt, die Gesellen nennen ihn den «Toten Gang».</p>
+    <p><b>5.1 ★★</b> Krabat findet dort Zähne und Knochensplitter statt Mehl. Tonda steht plötzlich hinter ihm und befiehlt ihm, mitzukommen und nicht herumzuschnüffeln.</p>
+    <p><b>5.2 ★</b> Zwei davon: Er trägt einen Hut mit einer roten Hahnenfeder. Er kommt nachts mit einem Wagen, vor dem sechs Pferde gespannt sind. Der Wagen verschwindet später spurlos.</p>
+    <p><b>5.2 ★★</b> Mögliche Spuren: Knochen im Toten Gang, das Mahlgeräusch klingt wie Totengesang, die Gesellen sind am Morgen erschöpft, Krabat träumt von einer brennenden Mühle. Jede Vermutung mit «weil» zählt.</p>
+  </div></details>
+
+  <details><summary>Lösungen Quest 6</summary><div>
+    <p><b>6.1 ★</b> Die Schwarze Schule. Die Schüler sitzen dort als Raben auf einer Stange.</p>
+    <p><b>6.1 ★★</b> Die Schüler müssen als Raben auf die Stange. Das erinnert an den Traum aus Kapitel 1: elf Raben und ein freier Platz. Jetzt sitzt Krabat auf diesem Platz.</p>
+    <p><b>6.2 ★</b> Das Lernen fällt Krabat schwer.</p>
+    <p><b>6.2 ★★</b> Beispiele: «Der Meister ist streng, denn er lässt Krabat bis zur Erschöpfung arbeiten.» Oder: «Der Meister ist mächtig, denn er verwandelt seine Schüler in Raben.»</p>
+  </div></details>
+
+  <details><summary>Lösungen Quest 7</summary><div>
+    <p><b>7.1 ★</b> Tonda erzählt von seiner verstorbenen Freundin. Er warnt Krabat davor, in der Mühle den Namen eines Mädchens zu verraten, das er gern hat.</p>
+    <p><b>7.1 ★★</b> Beispiel: «Ich vermute, dass der Meister einem Mädchen schaden könnte, weil Tonda so ernst davor warnt.»</p>
+    <p><b>7.2 ★</b> Die Stimme der Kantorka. Die Kantorka ist die Vorsängerin, die beim Singen der Mädchen den Ton angibt.</p>
+    <p><b>7.2 ★★</b> Im Morgengrauen zeichnen sich die Gesellen gegenseitig einen Drudenfuss auf die Stirn. Dieses Mal zeigt, dass sie zur geheimen Bruderschaft gehören.</p>
+  </div></details>
+
+  <details><summary>Lösungen Quest 8</summary><div>
+    <p><b>8.1 ★</b> Jeder Geselle erhält vom Meister eine Ohrfeige und schwört ihm Gehorsam.</p>
+    <p><b>8.1 ★★</b> Die Arbeit fällt Krabat nun leichter. Gleichzeitig wachsen seine Zweifel, denn er merkt, dass ihn der Schwur stärker an den Meister bindet, als ihm lieb ist.</p>
+    <p><b>8.2 ★</b> Der Fremde mit der Hahnenfeder, der Gevatter, kommt mit seinem Wagen. Die Gesellen tragen schwere Säcke in die Mühle und mahlen den geheimnisvollen Inhalt.</p>
+    <p><b>8.2 ★★</b> Der nächtliche Wagen aus Kapitel 5 kommt regelmässig. Die müden Gesellen haben also wirklich nachts für den Fremden gearbeitet.</p>
+  </div></details>
+
+  <details><summary>Lösungen Quest 9</summary><div>
+    <p><b>9.1 ★</b> Tonda, Andrusch und Krabat gehen auf den Viehmarkt in Wittichenau. Andrusch verwandelt sich in einen Ochsen, Tonda spielt einen einfachen Bauern, der ihn verkauft.</p>
+    <p><b>9.1 ★★</b> Beispiel: Der Meister schickt Tonda, Andrusch und Krabat auf den Viehmarkt nach Wittichenau, um mit Zauberei Geld zu beschaffen. Andrusch wird zum Ochsen, und Tonda treibt als Bauer den Preis in die Höhe. Der reiche Ochsenblaschke aus Kamenz kauft das Tier, doch Andrusch entkommt.</p>
+    <p><b>9.2 ★</b> Nur wenn Tonda den Strick behält, kann sich Andrusch später zurückverwandeln.</p>
+    <p><b>9.2 ★★</b> Andrusch verwandelt sich in eine Schwalbe und fliegt davon. Meinung: Der Trick ist unehrlich, weil Ochsenblaschke für ein Tier bezahlt, das er nie behält. Andere Meinungen zählen, wenn sie begründet sind.</p>
+  </div></details>
+
+  <details><summary>Lösungen Quest 10</summary><div>
+    <p><b>10.1 ★</b> Die Werber wollen junge Männer für den Krieg gegen Schweden anwerben. Sie verlangen Unterkunft und Essen.</p>
+    <p><b>10.1 ★★</b> Mit Zauberei: Das Essen schmeckt den Werbern scheusslich, und ihre Schlafplätze sind unbequem. Die Werber merken nicht, dass gezaubert wird. Später machen die Gesellen sie öffentlich lächerlich.</p>
+    <p><b>10.2 ★</b> Sie verwandeln sich in Raben und fliegen zur Mühle zurück.</p>
+    <p><b>10.2 ★★</b> In Kapitel 9 nutzen sie die Zauberei, um einen Käufer zu betrügen und Geld für den Meister zu holen. Hier schützen sie sich vor dem Krieg. Begründete Meinungen zählen.</p>
+  </div></details>
+
+  <details><summary>Lösungen Quest 11</summary><div>
+    <p><b>11.1 ★</b> Krabat, Tonda, Juro und Staschko. Staschko zaubert Pilze herbei.</p>
+    <p><b>11.1 ★★</b> Die gezauberten Pilze sind nicht essbar und verschwinden wieder. Zauberei kann also etwas vortäuschen, aber nicht alles Echte ersetzen.</p>
+    <p><b>11.2 ★</b> Tonda schenkt Krabat sein Messer. Wird die Klinge schwarz, droht Gefahr.</p>
+    <p><b>11.2 ★★</b> Das Messer ist ein Andenken, also ein Erinnerungsstück an Tonda. Beispiel: «Ich vermute, dass Tonda ahnt, dass ihm bald etwas zustösst, weil er so still ist und sein Messer verschenkt.»</p>
+  </div></details>
+
+  <details><summary>Lösungen Quest 12</summary><div>
+    <p><b>12.1 ★</b> Die Stimmung ist bedrückend, Angst und Misstrauen breiten sich aus. Krabat versucht mit kleinen Gesten, die anderen aufzuheitern, aber es gelingt nicht.</p>
+    <p><b>12.1 ★★</b> Beispiel: Im Winter breiten sich in der Mühle Angst und Misstrauen aus. In der Silvesternacht hört Krabat einen Schrei, und am Morgen liegt Tonda tot vor der Leiter. Tonda wird an einem abgelegenen Ort begraben, ohne Pastor und ohne kirchlichen Segen.</p>
+    <p><b>12.2 ★</b> Tonda wird ohne Pfarrer und ohne kirchlichen Segen begraben, an einem abgelegenen Ort.</p>
+    <p><b>12.2 ★★</b> Beispiel: Krabat hat in der Mühle die Schwarze Kunst gelernt und dabei Teile seines früheren Lebens verloren. Die Mühle trennt die Gesellen von der Welt draussen und vom Glauben.</p>
+  </div></details>
+
+  <details><summary>Lösungen Jahres-Quest</summary><div>
+    <p><b>Zeitstrahl:</b> D · G · J · L · B · F · I · K · H · C · A · E</p>
+    <p><b>J1</b> Beispiel: Der Jugendroman «Krabat» von Otfried Preussler erzählt von einem Waisenjungen, der in einer unheimlichen Mühle die Schwarze Kunst lernt. Krabat folgt einem Traum zur Mühle im Koselbruch und wird dort Lehrjunge. Die Arbeit ist hart, doch der Altgeselle Tonda hilft ihm heimlich. Krabat lernt in der Schwarzen Schule als Rabe zaubern und schwört dem Meister Gehorsam. Bei Neumond kommt ein unheimlicher Fremder, und die Stimmung wird immer bedrückender. In der Silvesternacht stirbt Tonda und wird ohne Pastor begraben.</p>
+    <p><b>J2 ★</b> Drei davon: Er macht die Mehlkammer sauber (K2). Er gibt Krabat heimlich Kraft durch Handauflegen (K3). Er warnt ihn in der Osternacht (K7). Er schenkt ihm sein Messer (K11).</p>
+    <p><b>J2 ★★</b> Beispiel: «Tonda ist hilfsbereit, denn er macht die Mehlkammer für Krabat sauber (K2).» «Tonda ist vorsichtig, denn er warnt Krabat, den Namen eines Mädchens zu verraten (K7).»</p>
+    <p><b>J3 ★★</b> Mögliche Vorausdeutungen: Tondas Warnung (K7), Tonda ist still und verschenkt sein Messer (K11), die Angst im Winter (K12), der Traum, in dem jeder Weg zur Mühle zurückführt (K4). Wichtig ist die Erklärung, warum die Spur auf das Ende hinweist.</p>
+    <p><b>M1</b> Mehlkammer (K2), Schwarze Schule (K6), Osternacht (K7), Ochsenmarkt (K9).</p>
+    <p><b>M2</b> Im Koselbruch bei Schwarzkollm. Bei Neumond kommt der Fremde mit der Hahnenfeder, der Gevatter, mit seinem Wagen.</p>
+    <p><b>M3</b> Zum Beispiel streng (lässt Krabat bis zur Erschöpfung arbeiten), mächtig (verwandelt die Schüler in Raben) oder einschüchternd (verlangt Ohrfeige und Schwur).</p>
+    <p><b>M4</b> Anfang: neugierig oder mutig, denn er folgt dem Traum und will auch «alles andere» lernen. Ende: zweifelnd oder misstrauisch, denn er merkt, dass ihn der Schwur bindet, und ihm fehlen am Grab die Worte für ein Gebet.</p>
+    <p><b>M5</b> Eine Vorausdeutung ist ein Hinweis im Text, der andeutet, was später passieren könnte. Beispiele: der freie Platz auf der Stange (K1), Tondas Messer (K11), der Traum vom Fluchtweg (K4).</p>
+    <p><b>M6</b> Tonda schenkt Krabat sein Messer. Es wird zu einem Erinnerungsstück an Tonda.</p>
+  </div></details>
+</section>
+
+<!-- ===================== ELTERN ===================== -->
+<section>
+  <h2 id="eltern">Für Eltern</h2>
+  <div class="card">
+    <p><b>Lernziele:</b> Handlung wiedergeben (Quest 1, 9, 12, J1), Figuren mit Beleg beschreiben (Quest 2, 4, 6, J2), Spuren und Vorausdeutungen erkennen (Quest 3, 4, 5, 7, 11, J3).</p>
+    <p><b>Missions-Check:</b> Achten Sie darauf, dass Merkmale mit einer Handlung der Figur belegt sind und Zusammenfassungen im Präsens und in eigenen Worten stehen.</p>
+    <p><b>Grundlage:</b> Die Lösungen beruhen auf Kapitelzusammenfassungen. Weicht das Buch ab, gilt das Buch. Seitenzahlen hängen von der Ausgabe ab.</p>
+    <p><b>Kapitel 12</b> (Tondas Tod) ist bedrückend. Der Berufe-Spiegel wird nicht bewertet und eignet sich gut für ein Gespräch.</p>
+  </div>
+</section>
+
+</main>
+
+<script>
+(function () {
+  var KEY = "krabat-jahr1-federn";
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { state = {}; }
+  var box = document.getElementById("tracker");
+  var items = [];
+  for (var i = 1; i <= 12; i++) items.push({ id: "f" + i, label: String(i) });
+  items.push({ id: "siegel", label: "Siegel", seal: true });
+  items.forEach(function (it) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.textContent = it.label;
+    b.setAttribute("aria-pressed", state[it.id] ? "true" : "false");
+    b.setAttribute("aria-label", it.seal ? "Siegel des ersten Jahres" : "Rabenfeder " + it.label);
+    if (it.seal) b.classList.add("seal");
+    if (state[it.id]) b.classList.add("on");
+    b.addEventListener("click", function () {
+      state[it.id] = !state[it.id];
+      b.classList.toggle("on", !!state[it.id]);
+      b.setAttribute("aria-pressed", state[it.id] ? "true" : "false");
+      try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+    });
+    box.appendChild(b);
+  });
+})();
+</script>
+</body>
+</html>
