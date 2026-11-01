@@ -82,6 +82,19 @@ li{margin:3px 0}
 .golden.show{display:block}
 .golden svg{width:80px;height:80px}
 .form-blank td:last-child{min-width:140px}
+.sorter{border:2px dashed var(--sky);border-radius:16px;padding:12px;margin:10px 0;background:var(--sky-soft)}
+.pool,.row{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;align-items:center}
+.row{margin-top:10px;padding:8px;border-radius:12px;background:var(--card);border:2px solid var(--line)}
+.row:empty::before{content:"Hier entsteht deine Woche: zuerst der erste Tag";color:var(--muted);font-size:.9rem;padding:0 6px}
+.daycard{border:0;border-radius:10px;padding:10px 14px;font-weight:900;letter-spacing:.5px;background:var(--sky);color:#fff;box-shadow:0 3px 0 rgba(0,0,0,.2);touch-action:manipulation}
+.daycard:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.2)}
+.row .daycard{background:var(--green)}
+.row .daycard .pos{opacity:.75;margin-right:6px}
+.daycard.ok{background:var(--green)}
+.daycard.wrong{background:var(--red)}
+.sorter-foot{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.sorter-msg{font-weight:800;margin:8px 0 0}
+.wordlist{font-weight:800;color:var(--muted)}
 footer{color:var(--muted);text-align:center;font-size:.85rem;margin-top:30px}
 </style>
 </head>
@@ -225,11 +238,22 @@ footer{color:var(--muted);text-align:center;font-size:.85rem;margin-top:30px}
   <blockquote class="say">«Oh no! The wind took my week plan. (Der Wind hat meinen Wochenplan weggeweht.) Can you help me, please?»</blockquote>
 
   <h3><span class="step-tag">Entdecken</span></h3>
-  <p>Du findest diese Fetzen vom Plan:</p>
-  <div class="chips"><span class="chip">SUNDAY</span><span class="chip">TUESDAY</span><span class="chip">FRIDAY</span><span class="chip">MONDAY</span><span class="chip">SATURDAY</span><span class="chip">THURSDAY</span><span class="chip">WEDNESDAY</span></div>
-  <div class="chips"><span class="chip">cooking</span><span class="chip">climbing</span><span class="chip">dancing</span><span class="chip">sailing</span><span class="chip">horse riding</span><span class="chip">hiking</span></div>
+  <p>Du findest diese Fetzen vom Plan. <b>Tipp die Tage in der richtigen Reihenfolge an.</b> Sie springen dann in die Reihe darunter. Falsch getippt? Tipp den Tag in der Reihe an, dann springt er zurück. Hier musst du nichts aufschreiben.</p>
+  <div class="sorter">
+    <div class="pool" id="dayPool">
+      <button class="daycard">SUNDAY</button><button class="daycard">TUESDAY</button><button class="daycard">FRIDAY</button><button class="daycard">MONDAY</button><button class="daycard">SATURDAY</button><button class="daycard">THURSDAY</button><button class="daycard">WEDNESDAY</button>
+    </div>
+    <div class="row" id="dayRow" aria-label="Deine Reihenfolge"></div>
+    <div class="sorter-foot">
+      <button class="cta alt" id="dayCheck">Prüfen</button>
+      <button class="ghost" id="dayReset">Nochmals</button>
+    </div>
+    <p class="sorter-msg" id="dayMsg" aria-live="polite"></p>
+  </div>
+  <p>Diese Hobby-Wörter musst du nur lesen:</p>
+  <p class="wordlist">cooking · climbing · dancing · sailing · horse riding · hiking</p>
   <ol>
-    <li>Bring die Tage in die richtige Reihenfolge. Schreib sie auf.</li>
+    <li>Bring die Tage oben in die richtige Reihenfolge. Drück dann auf «Prüfen».</li>
     <li>Was haben alle Tage gemeinsam? Schau auf das Ende.</li>
     <li>Was haben alle Hobby-Wörter gemeinsam? Schau auch auf das Ende.</li>
     <li>Welche Hobbys kennst du schon? Welche sind neu?</li>
@@ -312,8 +336,8 @@ footer{color:var(--muted);text-align:center;font-size:.85rem;margin-top:30px}
       <li>You move to the music.</li>
       <li>You sit on a horse.</li>
     </ol>
-    <div class="level"><b>★</b> Nimm die Wörter aus dem Kasten:
-      <div class="chips"><span class="chip">dancing</span><span class="chip">horse riding</span><span class="chip">climbing</span><span class="chip">cooking</span><span class="chip">sailing</span><span class="chip">hiking</span></div></div>
+    <div class="level"><b>★</b> Schreib die Wörter auf dein Papier. Diese Wörter helfen dir:
+      <p class="wordlist">dancing · horse riding · climbing · cooking · sailing · hiking</p></div>
     <div class="level"><b>★★</b> Ohne Kasten. Scroll nicht zum Bauplan zurück!</div>
     <div class="task-foot">
       <details class="hint"><summary>Tipp 1</summary><p>Such im Satz ein Wort, das du kennst.</p>
@@ -829,6 +853,36 @@ footer{color:var(--muted);text-align:center;font-size:.85rem;margin-top:30px}
   });
 
   render();
+
+  // Quest 2: Wochentage antippen und ordnen
+  var ORDER = ['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY'];
+  var pool = document.getElementById('dayPool'), row = document.getElementById('dayRow'), msg = document.getElementById('dayMsg');
+  var START = Array.prototype.map.call(pool.children, function(b){ return b.textContent; });
+  function label(){
+    Array.prototype.forEach.call(row.children, function(b, i){ b.innerHTML = '<span class="pos">'+(i+1)+'.</span>'+b.dataset.day; });
+    Array.prototype.forEach.call(pool.children, function(b){ b.textContent = b.dataset.day; });
+  }
+  Array.prototype.forEach.call(pool.children, function(b){ b.dataset.day = b.textContent; });
+  [pool,row].forEach(function(box){
+    box.addEventListener('click', function(e){
+      var b = e.target.closest('.daycard'); if (!b) return;
+      b.classList.remove('ok','wrong'); msg.textContent = '';
+      (box === pool ? row : pool).appendChild(b); label();
+    });
+  });
+  document.getElementById('dayCheck').addEventListener('click', function(){
+    var cards = Array.prototype.slice.call(row.children);
+    if (cards.length < 7){ msg.textContent = 'Es fehlen noch '+(7-cards.length)+' Tage. Tipp alle 7 Tage an.'; return; }
+    var right = 0;
+    cards.forEach(function(b,i){ var ok = b.dataset.day === ORDER[i]; if (ok) right++; b.classList.toggle('ok', ok); b.classList.toggle('wrong', !ok); });
+    msg.textContent = right === 7
+      ? 'Super! Das ist die richtige Reihenfolge. Was haben alle Tage am Ende gemeinsam?'
+      : (right === 1 ? '1 von 7 Tagen ist' : right+' von 7 Tagen sind')+' am richtigen Platz. Tipp die roten Tage an und versuch es nochmals.';
+  });
+  document.getElementById('dayReset').addEventListener('click', function(){
+    START.forEach(function(d){ var b = row.querySelector('[data-day="'+d+'"]') || pool.querySelector('[data-day="'+d+'"]'); b.classList.remove('ok','wrong'); pool.appendChild(b); });
+    msg.textContent = ''; label();
+  });
 })();
 </script>
 </body>
